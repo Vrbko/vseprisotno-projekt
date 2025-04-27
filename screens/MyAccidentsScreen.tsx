@@ -2,10 +2,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const NotificationsScreen = () => {
+const MyAccidentsScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Notifications Screen</Text>
+      <Text style={styles.title}>Accidents Screen</Text>
     </View>
   );
 };
@@ -22,4 +22,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NotificationsScreen;
+export default MyAccidentsScreen;

@@ -5,7 +5,6 @@ import MapView from 'react-native-maps';
 const MapScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Map Screen</Text>
       <MapView
         style={styles.map}
         initialRegion={{

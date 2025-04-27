@@ -8,12 +8,13 @@ import Icon from 'react-native-vector-icons/Ionicons'; // Import the icon compon
 // Import Screens
 import HomeScreen from './screens/HomeScreen';
 import SearchScreen from './screens/SearchScreen';
-import NotificationsScreen from './screens/MyAccidentsScreen';
+import MyAccidentsScreen from './screens/MyAccidentsScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import SplashScreen from './screens/SplashScreen';
 import FirstLoginScreen from './screens/FirstLoginScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
+import MapScreen from './screens/MapScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -49,9 +50,9 @@ const HomeTabs = () => {
 
           if (route.name === 'HomeTab') {
             iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Search') {
+          } else if (route.name === 'Map') {
             iconName = focused ? 'globe' : 'globe-outline';
-          } else if (route.name === 'Notifications') {
+          } else if (route.name === 'MyAccidents') {
             iconName = focused ? 'list' : 'list-outline';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
@@ -72,14 +73,14 @@ const HomeTabs = () => {
         options={{ title: 'Home' }} 
       />
       <Tab.Screen 
-        name="Search" 
-        component={SearchScreen} 
-        options={{ title: 'Search' }} 
+        name="Map" 
+        component={MapScreen} 
+        options={{ title: 'Map View' }} 
       />
       <Tab.Screen 
-        name="Notifications" 
-        component={NotificationsScreen} 
-        options={{ title: 'Accidents' }} // Changed from 'Notifications' to 'Accidents'
+        name="MyAccidents" 
+        component={MyAccidentsScreen} 
+        options={{ title: 'Accidents' }} 
       />
       <Tab.Screen 
         name="Profile" 
