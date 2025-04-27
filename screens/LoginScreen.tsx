@@ -28,7 +28,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
       />
       <Button title="Login" onPress={handleLogin} />
       <Button
-        title="Don't have an account? Register"
+        title="Register"
         onPress={() => navigation.replace('Register')} // Navigate to Register screen
       />
     </View>
