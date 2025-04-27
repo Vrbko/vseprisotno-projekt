@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { MaterialIcons, Ionicons } from 'react-native-vector-icons'; // Import icons
 
 // Import Screens
 import HomeScreen from './screens/HomeScreen';
@@ -12,7 +13,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import SplashScreen from './screens/SplashScreen'; // Splash screen
 import FirstLoginScreen from './screens/FirstLoginScreen'; // First login screen
 import LoginScreen from './screens/LoginScreen'; // Login screen
-import RegisterScreen from './screens/RegisterScreen'; // Login screen
+import RegisterScreen from './screens/RegisterScreen'; // Register screen
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -36,21 +37,26 @@ const App = () => {
           <Stack.Screen
             name="FirstLogin"
             component={FirstLoginScreen}
-            options={{ headerShown: false }}
+            options={{ title: 'First Login', headerShown: false }} // Ensuring header is shown
           />
           
           {/* Login Screen */}
           <Stack.Screen
             name="Login"
             component={LoginScreen}
-            options={{ headerShown: false }}
+            options={{ title: 'Login', headerShown: false }} // Custom title and back arrow
           />
-           {/* Register Screen */}
-           <Stack.Screen
+          
+          {/* Register Screen with Back Arrow */}
+          <Stack.Screen
             name="Register"
             component={RegisterScreen}
-            options={{ headerShown: false }}
+            options={{
+              title: 'Register', // Custom title for Register screen
+              headerShown: true, // Ensures the header is shown
+            }}
           />
+
           {/* Main Stack Navigator */}
           <Stack.Screen
             name="HomeScreen"
