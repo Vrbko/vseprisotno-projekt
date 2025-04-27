@@ -1,37 +1,36 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Perform login logic here
-    console.log('Logging in with', email, password);
-    // Navigate to Home Screen after login
-    navigation.navigate('Home');
+    // Add your login logic here
+    navigation.replace('HomeScreen'); // Navigate to HomeScreen after login
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.text}>Login Screen</Text>
       <TextInput
-        placeholder="Email"
+        style={styles.input}
+        placeholder="Enter Email"
         value={email}
         onChangeText={setEmail}
-        style={styles.input}
       />
       <TextInput
-        placeholder="Password"
+        style={styles.input}
+        placeholder="Enter Password"
+        secureTextEntry
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
-        style={styles.input}
       />
       <Button title="Login" onPress={handleLogin} />
-      <Text style={styles.link} onPress={() => navigation.navigate('Register')}>
-        Don't have an account? Register
-      </Text>
+      <Button
+        title="Don't have an account? Register"
+        onPress={() => navigation.replace('Register')} // Navigate to Register screen
+      />
     </View>
   );
 };
@@ -41,22 +40,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
   },
-  title: {
-    fontSize: 24,
+  text: {
+    fontSize: 20,
     marginBottom: 20,
   },
   input: {
-    width: '100%',
+    width: '80%',
     padding: 10,
-    marginBottom: 15,
+    marginVertical: 10,
+    borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 5,
-  },
-  link: {
-    color: '#007BFF',
-    marginTop: 15,
   },
 });
 

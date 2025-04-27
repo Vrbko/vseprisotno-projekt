@@ -1,44 +1,36 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
 const RegisterScreen = ({ navigation }: { navigation: any }) => {
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleRegister = () => {
-    // Perform registration logic here
-    console.log('Registering user with', username, email, password);
-    // Navigate to Home Screen after registration
-    navigation.navigate('Home');
+    // You can add your registration logic here
+    navigation.replace('Login'); // Navigate to Login after registering
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Register</Text>
+      <Text style={styles.text}>Register Screen</Text>
       <TextInput
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
         style={styles.input}
-      />
-      <TextInput
-        placeholder="Email"
+        placeholder="Enter Email"
         value={email}
         onChangeText={setEmail}
-        style={styles.input}
       />
       <TextInput
-        placeholder="Password"
+        style={styles.input}
+        placeholder="Enter Password"
+        secureTextEntry
         value={password}
         onChangeText={setPassword}
-        secureTextEntry
-        style={styles.input}
       />
       <Button title="Register" onPress={handleRegister} />
-      <Text style={styles.link} onPress={() => navigation.navigate('Login')}>
-        Already have an account? Login
-      </Text>
+      <Button
+        title="Already have an account? Login"
+        onPress={() => navigation.replace('Login')} // Navigate to Login screen
+      />
     </View>
   );
 };
@@ -48,22 +40,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
   },
-  title: {
-    fontSize: 24,
+  text: {
+    fontSize: 20,
     marginBottom: 20,
   },
   input: {
-    width: '100%',
+    width: '80%',
     padding: 10,
-    marginBottom: 15,
+    marginVertical: 10,
+    borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 5,
-  },
-  link: {
-    color: '#007BFF',
-    marginTop: 15,
   },
 });
 
