@@ -50,9 +50,9 @@ const HomeTabs = () => {
           if (route.name === 'HomeTab') {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Search') {
-            iconName = focused ? 'search' : 'search-outline';
+            iconName = focused ? 'globe' : 'globe-outline';
           } else if (route.name === 'Notifications') {
-            iconName = focused ? 'notifications' : 'notifications-outline';
+            iconName = focused ? 'list' : 'list-outline';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
           }
