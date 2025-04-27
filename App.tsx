@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons'; // Import the icon component
+import { View, StyleSheet } from 'react-native';
 
 // Import Screens
 import HomeScreen from './screens/HomeScreen';
@@ -25,6 +26,8 @@ const App = () => {
 
   return (
     <SafeAreaProvider>
+      <View style={styles.appContainer}>
+
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Splash">
           {/* Your existing stack screens remain the same */}
@@ -35,6 +38,8 @@ const App = () => {
           <Stack.Screen name="HomeScreen" component={HomeTabs} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
+      </View>
+
     </SafeAreaProvider>
   );
 };
@@ -90,5 +95,11 @@ const HomeTabs = () => {
     </Tab.Navigator>
   );
 };
+const styles = StyleSheet.create({
+  appContainer: {
+    flex: 1,
+    backgroundColor: '#E5E4E2', // Set the background color for the entire app
+  },
+});
 
 export default App;
