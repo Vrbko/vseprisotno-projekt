@@ -1,5 +1,14 @@
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
+# Figma Links
+
+[Design system - wireframe](https://www.figma.com/design/EQdOQNJO8Rux4EDKG7PnwK/Design-System?node-id=46-4&p=f&t=jX411xveqEsODApQ-0)
+
+[User Paths](https://www.figma.com/board/wD20vh5swIJy49FuCIc0r8/UserPaths?node-id=0-1&p=f&t=j5cmhzRxaRK5boT4-0)
+
+[Wireframe](https://www.figma.com/board/3pQpSxsKGlHkchWTyvFPKg/Wireframe?t=ZYRmYgJYtoxhqbdM-0)
+
+
 # Getting Started
 
 > **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
@@ -84,20 +93,31 @@ Iskanje po mapi ?
 Onlick odpre detajle 
 
 Implementacija Screeni
+    Splash 
+    First Start 
+    Login 
+    Register 
+
+    Maps
+    Home/Accidents
+    Accident Details
     Report
     Search
     Filter
-    User 
-    User Settings
-    Accidents
-    Accident Details
+
     My Accidents
-    Details Accident
+    My Accident details
     Edit my Accidents
+
     New Accident
     Analyze Accident (autocomplete z ml api)
+
+    User 
+    User Settings
+
+
 Design 
-Dark mode ? 
+Dark mode 
 ```
  
 API  - (python + mongo najboljse?) - publish na render? 
