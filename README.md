@@ -122,11 +122,11 @@ Dark mode
  
 API  - (python + mongo najboljse?) - publish na render? 
 ```
-Register
-Login
+Register ✅
+Login ✅
 User settings? Slika npr, al bo to lokalno
 
-Accidents CRUD
+Accidents CRUD 
 Points System
 
 Machine Learning API
