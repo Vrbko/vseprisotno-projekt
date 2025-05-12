@@ -9,6 +9,65 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 [Wireframe](https://www.figma.com/board/3pQpSxsKGlHkchWTyvFPKg/Wireframe?t=ZYRmYgJYtoxhqbdM-0)
 
 
+## TODO
+Vizualno
+```
+Kartice - Večji Front
+Slika & Maps v sliderju ( v details ) če obstaja slika
+Label za input fielde
+Map pins (size, barva, images? - logos)
+Map kartice - mogoče
+Iskanje po mapi ?
+Onlick odpre detajle 
+
+Implementacija Screeni
+    Splash ✅
+    First Start 
+    Login 
+    Register 
+
+    Maps
+    Home/Accidents
+    Accident Details
+    Report
+    Search
+    Filter
+
+    My Accidents
+    My Accident details
+    Edit my Accidents
+
+    New Accident
+    Analyze Accident (autocomplete z ml api)
+
+    User 
+    User Settings
+
+
+Design 
+Dark mode 
+```
+ 
+API  - (python + mongo najboljse?) - publish na render? 
+```
+Register ✅
+Login ✅
+User settings? Slika npr, al bo to lokalno
+
+Accidents CRUD ✅
+Points System
+
+Accident Classificatoin API✅
+```
+
+Machine Learning✅
+```
+Iskanje(razvijanje?) modelov✅
+Implementacija (python)✅
+Testiranje✅
+```
+
+
 # Getting Started
 
 > **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
@@ -81,61 +140,4 @@ yarn ios
 If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
 
 
-## TODO
-Vizualno
-```
-Kartice - Večji Front
-Slika & Maps v sliderju ( v details ) če obstaja slika
-Label za input fielde
-Map pins (size, barva, images? - logos)
-Map kartice - mogoče
-Iskanje po mapi ?
-Onlick odpre detajle 
-
-Implementacija Screeni
-    Splash ✅
-    First Start 
-    Login 
-    Register 
-
-    Maps
-    Home/Accidents
-    Accident Details
-    Report
-    Search
-    Filter
-
-    My Accidents
-    My Accident details
-    Edit my Accidents
-
-    New Accident
-    Analyze Accident (autocomplete z ml api)
-
-    User 
-    User Settings
-
-
-Design 
-Dark mode 
-```
- 
-API  - (python + mongo najboljse?) - publish na render? 
-```
-Register ✅
-Login ✅
-User settings? Slika npr, al bo to lokalno
-
-Accidents CRUD ✅
-Points System
-
-Machine Learning API
-```
-
-Machine Learning✅
-```
-Iskanje(razvijanje?) modelov✅
-Implementacija (python)✅
-Testiranje✅
-```
 

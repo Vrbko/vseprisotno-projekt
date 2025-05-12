@@ -22,3 +22,6 @@ class Accident(BaseModel):
 class UpdateSettings(BaseModel):
     setting_1: Optional[str] = None
     setting_2: Optional[bool] = None
+
+class ImageInput(BaseModel):
+    image_base64: str
