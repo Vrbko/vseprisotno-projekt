@@ -21,10 +21,24 @@ async def create_accident(accident: Accident, token: str = Query(...)):
     await db.accidents.insert_one({**accident.dict(), "user": user})
     return {"msg": "Accident created"}
 
-@router.get("/", response_model=List[Accident])
-async def list_accidents(token: str = Query(...)):
-    user = get_user(token)
+# Route to get accidents for a specific user
+@router.get("/user", response_model=List[Accident])
+async def list_user_accidents(token: str = Query(...)):
+    user = get_user(token)  # Assuming this function checks the token and retrieves the user
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
     cursor = db.accidents.find({"user": user})
+    return await cursor.to_list(100)
+
+# Route to get all accidents (only if the user is valid)
+@router.get("/", response_model=List[Accident])
+async def list_all_accidents(token: str = Query(...)):
+    user = get_user(token)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    cursor = db.accidents.find()
     return await cursor.to_list(100)
 
 @router.get("/search")
