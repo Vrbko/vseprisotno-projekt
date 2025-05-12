@@ -93,7 +93,7 @@ Iskanje po mapi ?
 Onlick odpre detajle 
 
 Implementacija Screeni
-    Splash 
+    Splash ✅
     First Start 
     Login 
     Register 
@@ -126,16 +126,16 @@ Register ✅
 Login ✅
 User settings? Slika npr, al bo to lokalno
 
-Accidents CRUD 
+Accidents CRUD ✅
 Points System
 
 Machine Learning API
 ```
 
-Machine Learning
+Machine Learning✅
 ```
-Iskanje(razvijanje?) modelov
-Implementacija (python)
-Testiranje
+Iskanje(razvijanje?) modelov✅
+Implementacija (python)✅
+Testiranje✅
 ```
 
