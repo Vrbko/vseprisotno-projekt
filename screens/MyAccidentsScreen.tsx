@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, FlatList, StyleSheet, Button } from 'react-native';
 import axios from 'axios';
 import { format } from 'date-fns';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MyAccidentsScreen = () => {
   const [accidents, setAccidents] = useState([]);
@@ -10,7 +11,8 @@ const MyAccidentsScreen = () => {
   useEffect(() => {
     const fetchAccidents = async () => {
       try {
-        const res = await axios.get('http://192.168.1.80:8080/accidents/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5fZG9lMSJ9.3nxeVypiprnEuz4x6IhTHcRIZjBfBni84I3rawNj75Y');
+        const token = await AsyncStorage.getItem('authToken');
+        const res = await axios.get(`http://192.168.1.80:8080/accidents/user/?token=${token}`);
         setAccidents(res.data);
       } catch (err) {
         console.error('Error fetching accidents:', err);

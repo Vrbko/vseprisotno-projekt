@@ -85,7 +85,7 @@ const HomeTabs = () => {
       <Tab.Screen 
         name="MyAccidents" 
         component={MyAccidentsScreen} 
-        options={{ title: 'Accidents' }} 
+        options={{ title: 'My Accidents' }} 
       />
       <Tab.Screen 
         name="Profile" 

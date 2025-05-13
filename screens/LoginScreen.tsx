@@ -1,13 +1,41 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    // Add your login logic here
-    navigation.replace('HomeScreen'); // Navigate to HomeScreen after login
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('http://192.168.1.80:8080/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
+
+      if (response.ok) {
+        // Login successful
+        const data = await response.json();
+        Alert.alert('Success', 'Logged in successfully');
+        navigation.replace('HomeScreen'); // Navig
+        await AsyncStorage.setItem('authToken', data.token);
+        // Navigate to home or dashboard
+        // You might want to store token here
+        
+      } else {
+        const errorData = await response.json();
+        Alert.alert('Login Failed', errorData.message || 'Unknown error');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Could not connect to server');
+      console.error(error);
+    }
   };
 
   return (
@@ -15,9 +43,9 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
       <Text style={styles.text}>Login Screen</Text>
       <TextInput
         style={styles.input}
-        placeholder="Enter Email"
-        value={email}
-        onChangeText={setEmail}
+        placeholder="Enter Username"
+        value={username}
+        onChangeText={setUsername}
       />
       <TextInput
         style={styles.input}
@@ -28,8 +56,8 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
       />
       <Button title="Login" onPress={handleLogin} />
       <Button
-        title="Register"
-        onPress={() => navigation.replace('Register')} // Navigate to Register screen
+        title="Don't have an account? Register"
+        onPress={() => navigation.replace('Register')}
       />
     </View>
   );
