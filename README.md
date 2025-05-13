@@ -23,8 +23,8 @@ Onlick odpre detajle
 Implementacija Screeni
     Splash ✅
     First Start 
-    Login 
-    Register 
+    Login ✅
+    Register ✅
 
     Maps
     Home/Accidents

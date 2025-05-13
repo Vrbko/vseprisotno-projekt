@@ -1,0 +1,400 @@
+{
+	"info": {
+		"_postman_id": "49432538-ca71-4deb-8b47-5a7a953a06f3",
+		"name": "Vseprisotno",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43823197",
+		"_collection_link": "https://vrbko-2856071.postman.co/workspace/Vrbko's-Workspace~db3be9d8-3219-4d91-846f-a694d65fac09/collection/43823197-49432538-ca71-4deb-8b47-5a7a953a06f3?action=share&source=collection_link&creator=43823197"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/info",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"info"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Clasify",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"image_base64\": \"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\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/clasify",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"clasify"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/info",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"info"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Create Accident",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/info",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"info"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Get user accidents",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/accidents/user/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJlbmUifQ.JeO4kjgOgbgqwUgF24Ofmf8lLS1u1Ijquk9_whMFL64",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"accidents",
+						"user",
+						""
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJlbmUifQ.JeO4kjgOgbgqwUgF24Ofmf8lLS1u1Ijquk9_whMFL64"
+						}
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "get all user accidents",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/accidents/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5fZG9lMSJ9.3nxeVypiprnEuz4x6IhTHcRIZjBfBni84I3rawNj75Y",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"accidents",
+						""
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5fZG9lMSJ9.3nxeVypiprnEuz4x6IhTHcRIZjBfBni84I3rawNj75Y"
+						}
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Update data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful PUT request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/info?id=1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"info"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				},
+				"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful DELETE request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/info?id=1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"info"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				},
+				"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		}
+	]
+}
