@@ -21,6 +21,7 @@ import AccidentScreen from './screens/AccidentScreen';
 import FiltersScreen from './screens/FiltersScreen';
 import ReportScreen from './screens/ReportScreen';
 import NewAccidentScreen from './screens/NewAccidentScreen';
+import AnalysisScreen from './screens/AnalysisScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -65,6 +66,11 @@ const App = () => {
               name="NewAccidentScreen"
               component={NewAccidentScreen}
               options={{title: 'New Accident'}}
+            />
+            <Stack.Screen
+              name="AnalysisScreen"
+              component={AnalysisScreen}
+              options={{title: 'Accident Analysis'}}
             />
             <Stack.Screen
               name="ReportScreen"

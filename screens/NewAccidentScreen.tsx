@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,10 +8,26 @@ import {
   Alert,
 } from 'react-native';
 
-const NewAccidentScreen = ({navigation}: {navigation: any}) => {
+const NewAccidentScreen = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: any;
+}) => {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [datetime, setDatetime] = useState('');
+
+  // Populate fields if returned from AnalysisScreen
+  useEffect(() => {
+    if (route.params?.analysisResult) {
+      const {description, category, datetime} = route.params.analysisResult;
+      setDescription(description);
+      setCategory(category);
+      setDatetime(datetime);
+    }
+  }, [route.params]);
 
   const handlePost = () => {
     if (!description || !category || !datetime) {
@@ -19,7 +35,6 @@ const NewAccidentScreen = ({navigation}: {navigation: any}) => {
       return;
     }
 
-    // Logic to send data to API goes here
     Alert.alert('Posted', 'Accident has been submitted.');
     navigation.goBack();
   };
@@ -48,7 +63,9 @@ const NewAccidentScreen = ({navigation}: {navigation: any}) => {
       />
 
       <View style={styles.buttonRow}>
-        <TouchableOpacity style={styles.scanButton}>
+        <TouchableOpacity
+          style={styles.scanButton}
+          onPress={() => navigation.navigate('AnalysisScreen')}>
           <Text style={styles.scanText}>Scan</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.postButton} onPress={handlePost}>
