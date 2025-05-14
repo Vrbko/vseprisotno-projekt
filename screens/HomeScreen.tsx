@@ -1,12 +1,18 @@
-// HomeScreen.tsx
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, FlatList, StyleSheet, Button } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import axios from 'axios';
-import { format } from 'date-fns';
+import {format} from 'date-fns';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getBaseUrl } from '../config';
+import {getBaseUrl} from '../config';
 
-const HomeScreen = ({ navigation }: { navigation: any }) => {
+const HomeScreen = ({navigation}: {navigation: any}) => {
   const [accidents, setAccidents] = useState([]);
 
   useEffect(() => {
@@ -15,30 +21,33 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
         const token = await AsyncStorage.getItem('authToken');
         const baseUrl = await getBaseUrl();
         const res = await axios.get(`${baseUrl}/accidents/?token=${token}`);
-        setAccidents(res.data);      } catch (err) {
+        setAccidents(res.data);
+      } catch (err) {
         console.error('Error fetching accidents:', err);
-        
       }
     };
 
     fetchAccidents();
   }, []);
 
-  const renderItem = ({ item }) => (
-    <View style={styles.card}>
-      <Image
-        source={{ uri: `data:image/jpeg;base64,${item.image_base64}` }}
-        style={styles.image}
-      />
-      <Text style={styles.category}>{item.category}</Text>
-      <Text style={styles.description}>{item.description}</Text>
-      <Text style={styles.datetime}>
-        {format(new Date(item.datetime), 'PPpp')}
-      </Text>
-      <Text style={styles.location}>
-        Lat: {item.latitude}, Lon: {item.longitude}
-      </Text>
-    </View>
+  const renderItem = ({item}) => (
+    <TouchableOpacity
+      onPress={() => navigation.navigate('AccidentScreen', {accident: item})}>
+      <View style={styles.card}>
+        <Image
+          source={{uri: `data:image/jpeg;base64,${item.image_base64}`}}
+          style={styles.image}
+        />
+        <Text style={styles.category}>{item.category}</Text>
+        <Text style={styles.description}>{item.description}</Text>
+        <Text style={styles.datetime}>
+          {format(new Date(item.datetime), 'PPpp')}
+        </Text>
+        <Text style={styles.location}>
+          Lat: {item.latitude}, Lon: {item.longitude}
+        </Text>
+      </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -61,10 +70,6 @@ const styles = StyleSheet.create({
     padding: 15,
     marginBottom: 15,
     elevation: 3,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    shadowOffset: { width: 0, height: 2 },
   },
   image: {
     height: 180,

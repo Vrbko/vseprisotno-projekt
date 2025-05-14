@@ -17,6 +17,7 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import MapScreen from './screens/MapScreen';
 import EditProfileScreen from './screens/EditProfileScreen';
+import AccidentScreen from './screens/AccidentScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -56,6 +57,7 @@ const App = () => {
               component={HomeTabs}
               options={{headerShown: false}}
             />
+            <Stack.Screen name="AccidentScreen" component={AccidentScreen} />
             <Stack.Screen
               name="EditProfile"
               component={EditProfileScreen}
