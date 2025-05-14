@@ -85,6 +85,13 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
         keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={styles.listContainer}
       />
+
+      {/* Floating Add Button */}
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={() => navigation.navigate('NewAccidentScreen')}>
+        <Icon name="add" size={28} color="#fff" />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -123,7 +130,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   listContainer: {
-    paddingBottom: 20,
+    paddingBottom: 80,
   },
   card: {
     backgroundColor: '#fff',
@@ -156,6 +163,18 @@ const styles = StyleSheet.create({
   location: {
     fontSize: 12,
     color: '#999',
+  },
+  fab: {
+    position: 'absolute',
+    right: 20,
+    bottom: 30,
+    backgroundColor: '#2c3e86',
+    borderRadius: 28,
+    width: 56,
+    height: 56,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 5,
   },
 });
 

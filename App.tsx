@@ -19,6 +19,8 @@ import MapScreen from './screens/MapScreen';
 import EditProfileScreen from './screens/EditProfileScreen';
 import AccidentScreen from './screens/AccidentScreen';
 import FiltersScreen from './screens/FiltersScreen';
+import ReportScreen from './screens/ReportScreen';
+import NewAccidentScreen from './screens/NewAccidentScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -59,6 +61,16 @@ const App = () => {
               options={{headerShown: false}}
             />
             <Stack.Screen name="AccidentScreen" component={AccidentScreen} />
+            <Stack.Screen
+              name="NewAccidentScreen"
+              component={NewAccidentScreen}
+              options={{title: 'New Accident'}}
+            />
+            <Stack.Screen
+              name="ReportScreen"
+              component={ReportScreen}
+              options={{title: 'Report Accident'}}
+            />
             <Stack.Screen name="FiltersScreen" component={FiltersScreen} />
             <Stack.Screen
               name="EditProfile"

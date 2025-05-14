@@ -1,22 +1,22 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Linking,
-} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Linking} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const AccidentScreen = ({route}: {route: any}) => {
+const AccidentScreen = ({route, navigation}: {route: any; navigation: any}) => {
   const {accident} = route.params;
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Details</Text>
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Details</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('ReportScreen')}>
+          <Icon name="alert-circle-outline" size={28} color="#2c3e86" />
+        </TouchableOpacity>
+      </View>
 
+      {/* Map */}
       <MapView
         style={styles.map}
         initialRegion={{
@@ -34,6 +34,7 @@ const AccidentScreen = ({route}: {route: any}) => {
         />
       </MapView>
 
+      {/* Category + Image */}
       <View style={styles.row}>
         <Text style={styles.title}>{accident.category}</Text>
         <TouchableOpacity
@@ -44,9 +45,11 @@ const AccidentScreen = ({route}: {route: any}) => {
         </TouchableOpacity>
       </View>
 
+      {/* Description */}
       <Text style={styles.sectionHeader}>Details</Text>
       <Text style={styles.description}>{accident.description}</Text>
 
+      {/* Reaction Buttons */}
       <View style={styles.reactions}>
         <TouchableOpacity>
           <Icon name="thumbs-up" size={36} color="#2c3e86" />
@@ -60,17 +63,17 @@ const AccidentScreen = ({route}: {route: any}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#eaeaea',
-  },
+  container: {flex: 1, padding: 20, backgroundColor: '#eaeaea'},
   header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  headerText: {
     fontSize: 28,
     fontWeight: 'bold',
     color: '#2c3e86',
-    textAlign: 'center',
-    marginBottom: 10,
   },
   map: {
     width: '100%',
