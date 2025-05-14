@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import React, {useEffect, useState} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons'; // Import the icon component
-import { View, StyleSheet } from 'react-native';
+import {View, StyleSheet} from 'react-native';
 
 // Import Screens
 import HomeScreen from './screens/HomeScreen';
@@ -16,6 +16,7 @@ import FirstLoginScreen from './screens/FirstLoginScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import MapScreen from './screens/MapScreen';
+import EditProfileScreen from './screens/EditProfileScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -27,19 +28,42 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <View style={styles.appContainer}>
-
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Splash">
-          {/* Your existing stack screens remain the same */}
-          <Stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="FirstLogin" component={FirstLoginScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'Register', headerShown: true }} />
-          <Stack.Screen name="HomeScreen" component={HomeTabs} options={{ headerShown: false }} />
-        </Stack.Navigator>
-      </NavigationContainer>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Splash">
+            {/* Your existing stack screens remain the same */}
+            <Stack.Screen
+              name="Splash"
+              component={SplashScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="FirstLogin"
+              component={FirstLoginScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Register"
+              component={RegisterScreen}
+              options={{title: 'Register', headerShown: true}}
+            />
+            <Stack.Screen
+              name="HomeScreen"
+              component={HomeTabs}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="EditProfile"
+              component={EditProfileScreen}
+              options={{title: 'Edit Profile'}}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
       </View>
-
     </SafeAreaProvider>
   );
 };
@@ -49,8 +73,8 @@ const HomeTabs = () => {
   return (
     <Tab.Navigator
       initialRouteName="HomeTab"
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color, size}) => {
           let iconName;
 
           if (route.name === 'HomeTab') {
@@ -70,27 +94,26 @@ const HomeTabs = () => {
         tabBarStyle: {
           paddingBottom: 5, // Adjust padding if needed
         },
-      })}
-    >
-      <Tab.Screen 
-        name="HomeTab" 
-        component={HomeScreen} 
-        options={{ title: 'Home' }} 
+      })}>
+      <Tab.Screen
+        name="HomeTab"
+        component={HomeScreen}
+        options={{title: 'Home'}}
       />
-      <Tab.Screen 
-        name="Map" 
-        component={MapScreen} 
-        options={{ title: 'Map View' }} 
+      <Tab.Screen
+        name="Map"
+        component={MapScreen}
+        options={{title: 'Map View'}}
       />
-      <Tab.Screen 
-        name="MyAccidents" 
-        component={MyAccidentsScreen} 
-        options={{ title: 'My Accidents' }} 
+      <Tab.Screen
+        name="MyAccidents"
+        component={MyAccidentsScreen}
+        options={{title: 'My Accidents'}}
       />
-      <Tab.Screen 
-        name="Profile" 
-        component={ProfileScreen} 
-        options={{ title: 'Profile' }} 
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{title: 'Profile'}}
       />
     </Tab.Navigator>
   );
