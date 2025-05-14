@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { getBaseUrl } from '../config';
 
 const RegisterScreen = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
@@ -23,7 +24,8 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
     }
 
     try {
-      const response = await fetch('http://192.168.1.80:8080/auth/register', {
+      const baseUrl = await getBaseUrl();
+      const response = await fetch(`${baseUrl}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

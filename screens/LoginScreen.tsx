@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getBaseUrl } from '../config';
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
@@ -8,7 +9,8 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://192.168.1.80:8080/auth/login', {
+      const baseUrl = await getBaseUrl();
+      const response = await fetch(`${baseUrl}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

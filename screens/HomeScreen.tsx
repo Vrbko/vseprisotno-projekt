@@ -4,6 +4,7 @@ import { View, Text, Image, FlatList, StyleSheet, Button } from 'react-native';
 import axios from 'axios';
 import { format } from 'date-fns';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getBaseUrl } from '../config';
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [accidents, setAccidents] = useState([]);
@@ -12,9 +13,9 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
     const fetchAccidents = async () => {
       try {
         const token = await AsyncStorage.getItem('authToken');
-        const res = await axios.get(`http://192.168.1.80:8080/accidents/?token=${token}`);
-        setAccidents(res.data);
-      } catch (err) {
+        const baseUrl = await getBaseUrl();
+        const res = await axios.get(`${baseUrl}/accidents/?token=${token}`);
+        setAccidents(res.data);      } catch (err) {
         console.error('Error fetching accidents:', err);
         
       }
