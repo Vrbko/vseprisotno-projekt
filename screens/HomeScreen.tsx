@@ -13,25 +13,29 @@ import {format} from 'date-fns';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getBaseUrl} from '../config';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useFocusEffect} from '@react-navigation/native';
+import {useCallback} from 'react';
 
 const HomeScreen = ({navigation}: {navigation: any}) => {
   const [accidents, setAccidents] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
 
-  useEffect(() => {
-    const fetchAccidents = async () => {
-      try {
-        const token = await AsyncStorage.getItem('authToken');
-        const baseUrl = await getBaseUrl();
-        const res = await axios.get(`${baseUrl}/accidents/?token=${token}`);
-        setAccidents(res.data);
-      } catch (err) {
-        console.error('Error fetching accidents:', err);
-      }
-    };
+  useFocusEffect(
+    useCallback(() => {
+      const fetchAccidents = async () => {
+        try {
+          const token = await AsyncStorage.getItem('authToken');
+          const baseUrl = await getBaseUrl();
+          const res = await axios.get(`${baseUrl}/accidents/?token=${token}`);
+          setAccidents(res.data);
+        } catch (err) {
+          console.error('Error fetching accidents:', err);
+        }
+      };
 
-    fetchAccidents();
-  }, []);
+      fetchAccidents();
+    }, []),
+  );
 
   const filteredAccidents = accidents.filter(acc =>
     acc.category.toLowerCase().includes(searchQuery.toLowerCase()),

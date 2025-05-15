@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, TextInput, Button, StyleSheet, Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getBaseUrl } from '../config';
+import {getBaseUrl} from '../config';
 
-const LoginScreen = ({ navigation }: { navigation: any }) => {
+const LoginScreen = ({navigation}: {navigation: any}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -29,7 +29,6 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
         await AsyncStorage.setItem('authToken', data.token);
         // Navigate to home or dashboard
         // You might want to store token here
-        
       } else {
         const errorData = await response.json();
         Alert.alert('Login Failed', errorData.message || 'Unknown error');
