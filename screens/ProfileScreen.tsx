@@ -5,20 +5,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getBaseUrl} from '../config';
 
 const ProfileScreen = ({navigation}: {navigation: any}) => {
-  const [userData, setUserData] = useState({
-    username: '',
-    score: 0,
-    accident_count: 0,
-  });
+  const [username, setUsername] = useState('');
+  const [accidentCount, setAccidentCount] = useState(0);
 
   useEffect(() => {
     const fetchUserStats = async () => {
       try {
         const token = await AsyncStorage.getItem('authToken');
+        const storedUsername = await AsyncStorage.getItem('username');
+        if (storedUsername) setUsername(storedUsername);
+
         const baseUrl = await getBaseUrl();
         const res = await fetch(`${baseUrl}/user/stats?token=${token}`);
         const data = await res.json();
-        setUserData(data);
+        setAccidentCount(data.total_accidents || 0);
       } catch (error) {
         console.error('Error fetching user stats:', error);
       }
@@ -43,9 +43,8 @@ const ProfileScreen = ({navigation}: {navigation: any}) => {
         style={styles.avatar}
       />
 
-      <Text style={styles.name}>{userData.username || 'User Name'}</Text>
-      <Text style={styles.stat}>Score: {userData.score}</Text>
-      <Text style={styles.stat}>My Accidents: {userData.accident_count}</Text>
+      <Text style={styles.name}>{username || 'User Name'}</Text>
+      <Text style={styles.stat}>Total Accidents: {accidentCount}</Text>
     </View>
   );
 };
@@ -87,7 +86,6 @@ const styles = StyleSheet.create({
   stat: {
     fontSize: 16,
     color: '#444',
-    marginBottom: 5,
   },
 });
 

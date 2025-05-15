@@ -22,6 +22,7 @@ import FiltersScreen from './screens/FiltersScreen';
 import ReportScreen from './screens/ReportScreen';
 import NewAccidentScreen from './screens/NewAccidentScreen';
 import AnalysisScreen from './screens/AnalysisScreen';
+import FullImageScreen from './screens/FullImageScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -82,6 +83,11 @@ const App = () => {
               name="EditProfile"
               component={EditProfileScreen}
               options={{title: 'Edit Profile'}}
+            />
+            <Stack.Screen
+              name="FullImageScreen"
+              component={FullImageScreen}
+              options={{title: 'Image'}}
             />
           </Stack.Navigator>
         </NavigationContainer>
