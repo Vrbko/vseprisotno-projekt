@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff', // Background color for splash screen
+    backgroundColor: '#EDEDED', // Background color for splash screen
   },
   logo: {
     width: 300,  // Adjust width based on your logo size
