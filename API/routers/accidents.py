@@ -3,6 +3,7 @@ from models import Accident
 from database import db
 from typing import List
 from jose import jwt
+from bson import ObjectId
 
 
 router = APIRouter()

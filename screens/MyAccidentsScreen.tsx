@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,6 @@ import {format} from 'date-fns';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getBaseUrl} from '../config';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useFocusEffect} from '@react-navigation/native';
 
 interface Accident {
   _id?: string;
@@ -25,34 +24,44 @@ interface Accident {
   longitude: number;
 }
 
+const USER_ACCIDENTS_KEY = 'userAccidentsCache';
+
 const MyAccidentsScreen = ({navigation}: {navigation: any}) => {
   const [accidents, setAccidents] = useState<Accident[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
-  useFocusEffect(
-    useCallback(() => {
-      const fetchAccidents = async () => {
-        try {
-          const token = await AsyncStorage.getItem('authToken');
-          if (!token) {
-            console.warn('Missing token');
-            return;
-          }
-
-          const baseUrl = await getBaseUrl();
-          const res = await axios.get(`${baseUrl}/accidents/user`, {
-            params: {token},
-          });
-
-          setAccidents(res.data);
-        } catch (err) {
-          console.error('Error fetching user accidents:', err);
+  useEffect(() => {
+    const loadUserAccidents = async () => {
+      try {
+        // Try loading cached data first
+        const cached = await AsyncStorage.getItem(USER_ACCIDENTS_KEY);
+        if (cached) {
+          setAccidents(JSON.parse(cached));
+          return;
         }
-      };
 
-      fetchAccidents();
-    }, []),
-  );
+        // If no cache, fetch from API
+        const token = await AsyncStorage.getItem('authToken');
+        if (!token) {
+          console.warn('Missing token');
+          return;
+        }
+
+        const baseUrl = await getBaseUrl();
+        const res = await axios.get(`${baseUrl}/accidents/user`, {
+          params: {token},
+        });
+
+        const data = res.data;
+        setAccidents(data);
+        await AsyncStorage.setItem(USER_ACCIDENTS_KEY, JSON.stringify(data));
+      } catch (err) {
+        console.error('Error fetching user accidents:', err);
+      }
+    };
+
+    loadUserAccidents();
+  }, []);
 
   const filteredAccidents = accidents.filter(acc =>
     acc.category.toLowerCase().includes(searchQuery.toLowerCase()),

@@ -13,29 +13,40 @@ import {format} from 'date-fns';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getBaseUrl} from '../config';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useFocusEffect} from '@react-navigation/native';
-import {useCallback} from 'react';
+
+const ACCIDENTS_STORAGE_KEY = 'cachedAccidents';
 
 const HomeScreen = ({navigation}: {navigation: any}) => {
   const [accidents, setAccidents] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
 
-  useFocusEffect(
-    useCallback(() => {
-      const fetchAccidents = async () => {
-        try {
+  useEffect(() => {
+    const loadAccidents = async () => {
+      try {
+        // Check if data already exists in AsyncStorage
+        const cached = await AsyncStorage.getItem(ACCIDENTS_STORAGE_KEY);
+
+        if (cached) {
+          // Load from cache
+          setAccidents(JSON.parse(cached));
+        } else {
+          // Fetch from API
           const token = await AsyncStorage.getItem('authToken');
           const baseUrl = await getBaseUrl();
           const res = await axios.get(`${baseUrl}/accidents/?token=${token}`);
-          setAccidents(res.data);
-        } catch (err) {
-          console.error('Error fetching accidents:', err);
-        }
-      };
+          const data = res.data;
 
-      fetchAccidents();
-    }, []),
-  );
+          // Save to state and cache
+          setAccidents(data);
+          await AsyncStorage.setItem(ACCIDENTS_STORAGE_KEY, JSON.stringify(data));
+        }
+      } catch (err) {
+        console.error('Error loading accidents:', err);
+      }
+    };
+
+    loadAccidents();
+  }, []);
 
   const filteredAccidents = accidents.filter(acc =>
     acc.category.toLowerCase().includes(searchQuery.toLowerCase()),

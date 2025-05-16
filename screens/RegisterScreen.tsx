@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { getBaseUrl } from '../config';
 
 const RegisterScreen = ({ navigation }: { navigation: any }) => {
@@ -7,10 +7,7 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const isValidEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+  const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const handleRegister = async () => {
     if (!username || !email || !password) {
@@ -27,14 +24,8 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
       const baseUrl = await getBaseUrl();
       const response = await fetch(`${baseUrl}/auth/register`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username,
-          email,
-          password,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password }),
       });
 
       if (response.ok) {
@@ -52,16 +43,14 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Register Screen</Text>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+      </TouchableOpacity>
+
+      <Text style={styles.title}>Register</Text>
+
       <TextInput
         style={styles.input}
-        placeholder="Enter Username"
-        value={username}
-        onChangeText={setUsername}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Enter Email"
+        placeholder="Email"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
@@ -69,16 +58,21 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Enter Password"
+        placeholder="Username"
+        value={username}
+        onChangeText={setUsername}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Register" onPress={handleRegister} />
-      <Button
-        title="Already have an account? Login"
-        onPress={() => navigation.replace('Login')}
-      />
+
+      <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
+        <Text style={styles.registerButtonText}>Register</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -86,20 +80,42 @@ const RegisterScreen = ({ navigation }: { navigation: any }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#EDEDED', // Light grey background
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 20,
   },
-  text: {
-    fontSize: 20,
-    marginBottom: 20,
+  backButton: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#2C3E50',
+    marginBottom: 30,
   },
   input: {
-    width: '80%',
-    padding: 10,
-    marginVertical: 10,
-    borderColor: '#ccc',
+    width: '100%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+    padding: 12,
+    marginVertical: 8,
+    borderColor: '#DADADA',
     borderWidth: 1,
-    borderRadius: 5,
+  },
+  registerButton: {
+    backgroundColor: '#2563EB', // Nice blue
+    paddingVertical: 12,
+    paddingHorizontal: 40,
+    borderRadius: 10,
+    marginTop: 20,
+  },
+  registerButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
 

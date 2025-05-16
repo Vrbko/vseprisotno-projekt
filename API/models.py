@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field, root_validator
 from typing import Optional
 from datetime import datetime
 
@@ -12,6 +12,7 @@ class UserLogin(BaseModel):
     password: str
 
 class Accident(BaseModel):
+    id: str = Field(alias="_id")
     description: str
     datetime: datetime
     category: str
@@ -19,9 +20,16 @@ class Accident(BaseModel):
     latitude: float
     longitude: float
 
+    @root_validator(pre=True)
+    def convert_id(cls, values: dict[str, any]):
+        if "_id" in values:
+            values["_id"] = str(values["_id"])
+        return values
+
 class UpdateSettings(BaseModel):
     setting_1: Optional[str] = None
     setting_2: Optional[bool] = None
 
 class ImageInput(BaseModel):
     image_base64: str
+
