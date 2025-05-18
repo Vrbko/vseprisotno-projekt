@@ -22,6 +22,8 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
         Alert.alert('Success', 'Logged in successfully');
         await AsyncStorage.setItem('authToken', data.token);
         await AsyncStorage.setItem('username', username);
+        await AsyncStorage.removeItem("cachedAccidents"); // or {} depending on your structure
+        await AsyncStorage.removeItem("userAccidentsCache"); // or {} depending on your structure
         navigation.replace('HomeScreen');
       } else {
         const errorData = await response.json();
