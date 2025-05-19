@@ -28,8 +28,8 @@ const NewAccidentScreen = ({
   const [description, setDescription] = useState('');
   const [datetime, setDatetime] = useState(new Date());
   const [useCurrentLocation, setUseCurrentLocation] = useState(false);
-  const [latitude, setLatitude] = useState<string>('');
-  const [longitude, setLongitude] = useState<string>('');
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
   const [imageBase64, setImageBase64] = useState('');
 
   useEffect(() => {
@@ -132,9 +132,10 @@ const NewAccidentScreen = ({
       const baseUrl = await getBaseUrl();
 
       const payload = {
+        _id: 'client-temp-id', // ⬅️ Dummy ID to satisfy backend Pydantic model
         category,
         description,
-        datetime,
+        datetime: datetime.toISOString(),
         latitude: parseFloat(latitude),
         longitude: parseFloat(longitude),
         image_base64: imageBase64 || 'placeholderBase64String',
@@ -149,9 +150,17 @@ const NewAccidentScreen = ({
         Alert.alert('Success', 'Accident has been submitted.');
         navigation.goBack();
       }
-    } catch (error) {
-      console.error('Error submitting accident:', error);
-      Alert.alert('Error', 'Failed to submit accident.');
+    } catch (error: any) {
+      console.error(
+        'Error submitting accident:',
+        error.response?.data || error.message,
+      );
+      Alert.alert(
+        'Error',
+        error.response?.data?.detail?.map?.((d: any) => d.msg).join('\n') ||
+          error.response?.data?.message ||
+          'Failed to submit accident.',
+      );
     }
   };
 

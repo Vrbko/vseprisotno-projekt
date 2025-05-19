@@ -7,44 +7,69 @@ import {getBaseUrl} from '../config';
 const ProfileScreen = ({navigation}: {navigation: any}) => {
   const [username, setUsername] = useState('');
   const [accidentCount, setAccidentCount] = useState(0);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    const fetchUserStats = async () => {
-      try {
-        const token = await AsyncStorage.getItem('authToken');
-        const storedUsername = await AsyncStorage.getItem('username');
-        if (storedUsername) setUsername(storedUsername);
+    const fetchData = async () => {
+      const token = await AsyncStorage.getItem('authToken');
+      const storedUsername = await AsyncStorage.getItem('username');
+      const image = await AsyncStorage.getItem('profileImage');
+      const dark = await AsyncStorage.getItem('darkMode');
 
+      if (storedUsername) {
+        setUsername(storedUsername);
+      }
+      if (image) {
+        setProfileImage(image);
+      }
+      if (dark) {
+        setDarkMode(dark === 'true');
+      }
+
+      try {
         const baseUrl = await getBaseUrl();
         const res = await fetch(`${baseUrl}/user/stats?token=${token}`);
         const data = await res.json();
         setAccidentCount(data.total_accidents || 0);
       } catch (error) {
-        console.error('Error fetching user stats:', error);
+        console.error('Error fetching stats:', error);
       }
     };
 
-    fetchUserStats();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', fetchData);
+    return unsubscribe;
+  }, [navigation]);
 
   return (
-    <View style={styles.container}>
-      {/* Header */}
+    <View style={[styles.container, darkMode && {backgroundColor: '#111'}]}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Profile</Text>
+        <Text style={[styles.headerText, darkMode && {color: '#fff'}]}>
+          Profile
+        </Text>
         <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
-          <Icon name="settings-outline" size={24} color="#333" />
+          <Icon
+            name="settings-outline"
+            size={24}
+            color={darkMode ? '#fff' : '#333'}
+          />
         </TouchableOpacity>
       </View>
 
-      {/* Avatar and Info */}
       <Image
-        source={{uri: 'https://i.pravatar.cc/150?img=12'}}
+        source={{
+          uri: profileImage
+            ? `data:image/png;base64,${profileImage}`
+            : 'https://i.pravatar.cc/150?img=12',
+        }}
         style={styles.avatar}
       />
-
-      <Text style={styles.name}>{username || 'User Name'}</Text>
-      <Text style={styles.stat}>Total Accidents: {accidentCount}</Text>
+      <Text style={[styles.name, darkMode && {color: '#fff'}]}>
+        {username || 'User'}
+      </Text>
+      <Text style={[styles.stat, darkMode && {color: '#ccc'}]}>
+        Total Accidents: {accidentCount}
+      </Text>
     </View>
   );
 };
@@ -65,11 +90,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  headerText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#2d3e50',
-  },
+  headerText: {fontSize: 24, fontWeight: 'bold', color: '#2d3e50'},
   avatar: {
     width: 100,
     height: 100,
@@ -77,16 +98,8 @@ const styles = StyleSheet.create({
     marginTop: 40,
     marginBottom: 20,
   },
-  name: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#2d3e50',
-    marginBottom: 10,
-  },
-  stat: {
-    fontSize: 16,
-    color: '#444',
-  },
+  name: {fontSize: 20, fontWeight: '600', color: '#2d3e50', marginBottom: 10},
+  stat: {fontSize: 16, color: '#444'},
 });
 
 export default ProfileScreen;

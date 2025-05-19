@@ -16,8 +16,18 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const ACCIDENTS_STORAGE_KEY = 'cachedAccidents';
 
+type Accident = {
+  _id: string;
+  category: string;
+  description: string;
+  datetime: string;
+  image_base64: string;
+  latitude: number;
+  longitude: number;
+};
+
 const HomeScreen = ({navigation}: {navigation: any}) => {
-  const [accidents, setAccidents] = useState([]);
+  const [accidents, setAccidents] = useState<Accident[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
@@ -38,7 +48,10 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
 
           // Save to state and cache
           setAccidents(data);
-          await AsyncStorage.setItem(ACCIDENTS_STORAGE_KEY, JSON.stringify(data));
+          await AsyncStorage.setItem(
+            ACCIDENTS_STORAGE_KEY,
+            JSON.stringify(data),
+          );
         }
       } catch (err) {
         console.error('Error loading accidents:', err);
@@ -52,7 +65,7 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
     acc.category.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
-  const renderItem = ({item}) => (
+  const renderItem = ({item}: {item: Accident}) => (
     <TouchableOpacity
       onPress={() => navigation.navigate('AccidentScreen', {accident: item})}>
       <View style={styles.card}>
