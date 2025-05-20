@@ -19,7 +19,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
 
       if (response.ok) {
         const data = await response.json();
-        Alert.alert('Success', 'Logged in successfully');
+        //Alert.alert('Success', 'Logged in successfully');
         await AsyncStorage.setItem('authToken', data.token);
         await AsyncStorage.setItem('username', username);
         await AsyncStorage.removeItem("cachedAccidents"); // or {} depending on your structure

@@ -5,14 +5,51 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  Alert,
 } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {getBaseUrl} from '../config'; // assuming this exists
+import {useEffect, useState} from 'react';
 
 const screenHeight = Dimensions.get('window').height;
 
 const AccidentScreen = ({route, navigation}: {route: any; navigation: any}) => {
   const {accident} = route.params;
+  const [username, setUsername] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUsername = async () => {
+      const storedUsername = await AsyncStorage.getItem('username');
+      setUsername(storedUsername);
+    };
+
+    fetchUsername();
+  }, []);
+
+  const handleDelete = async () => {
+    try {
+      const token = await AsyncStorage.getItem('authToken');
+      const baseUrl = await getBaseUrl();
+
+      await axios.delete(`${baseUrl}/accidents/${accident._id}/?token=${token}`);
+ 
+      Alert.alert('Deleted', 'Accident deleted successfully.');
+      navigation.goBack();
+    } catch (error) {
+      console.error('Delete failed:', error);
+      Alert.alert('Error', 'Failed to delete the accident.');
+    }
+  };
+
+  const confirmDelete = () => {
+    Alert.alert('Confirm Delete', 'Are you sure you want to delete this accident?', [
+      {text: 'Cancel', style: 'cancel'},
+      {text: 'Delete', style: 'destructive', onPress: handleDelete},
+    ]);
+  };
 
   return (
     <View style={styles.container}>
@@ -70,6 +107,13 @@ const AccidentScreen = ({route, navigation}: {route: any; navigation: any}) => {
           <Icon name="thumbs-down" size={32} color="#444" />
         </TouchableOpacity>
       </View>
+
+      {/* Delete Button (only if user owns it) */}
+      {username === accident.user && (
+        <TouchableOpacity style={styles.deleteButton} onPress={confirmDelete}>
+          <Text style={styles.deleteButtonText}>Delete Accident</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -136,6 +180,17 @@ const styles = StyleSheet.create({
   reactionButton: {
     padding: 8,
   },
+  deleteButton: {
+  backgroundColor: '#e74c3c',
+  padding: 12,
+  borderRadius: 10,
+  marginTop: 20,
+  alignItems: 'center',
+},
+deleteButtonText: {
+  color: '#fff',
+  fontWeight: '600',
+},
 });
 
 export default AccidentScreen;

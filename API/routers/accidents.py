@@ -50,9 +50,10 @@ async def search_accidents(q: str = "", token: str = Query(...)):
 
 @router.delete("/{accident_id}")
 async def delete_accident(accident_id: str, token: str = Query(...)):
-    from bson import ObjectId
     user = get_user(token)
-    result = await db.accidents.delete_one({"_id": ObjectId(accident_id), "user": user})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    result = await db.accidents.delete_one({"_id": ObjectId(accident_id)})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Not found")
     return {"msg": "Deleted"}
