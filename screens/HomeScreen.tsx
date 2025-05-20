@@ -144,23 +144,34 @@ const HomeScreen = ({navigation}: any) => {
       </View>
 
       {activeFilters && (
-        <View style={styles.activeFilters}>
-          {activeFilters.selectedCategories?.map(cat => (
-            <Text key={cat} style={styles.filterTag}>
-              {cat}
-            </Text>
-          ))}
-          {activeFilters.startDate && (
-            <Text style={styles.filterTag}>
-              From: {new Date(activeFilters.startDate).toLocaleDateString()}
-            </Text>
-          )}
-          {activeFilters.endDate && (
-            <Text style={styles.filterTag}>
-              To: {new Date(activeFilters.endDate).toLocaleDateString()}
-            </Text>
-          )}
-        </View>
+        <>
+          <View style={styles.activeFilters}>
+            {activeFilters.selectedCategories?.map(cat => (
+              <Text key={cat} style={styles.filterTag}>
+                {cat}
+              </Text>
+            ))}
+            {activeFilters.startDate && (
+              <Text style={styles.filterTag}>
+                From: {new Date(activeFilters.startDate).toLocaleDateString()}
+              </Text>
+            )}
+            {activeFilters.endDate && (
+              <Text style={styles.filterTag}>
+                To: {new Date(activeFilters.endDate).toLocaleDateString()}
+              </Text>
+            )}
+          </View>
+          <TouchableOpacity
+            onPress={async () => {
+              await AsyncStorage.removeItem('activeFilters');
+              setActiveFilters(null);
+              setAccidents(allAccidents);
+            }}
+            style={styles.clearButtonInline}>
+            <Text style={styles.clearButtonTextInline}>Clear Filters</Text>
+          </TouchableOpacity>
+        </>
       )}
 
       <View style={styles.searchBar}>
@@ -222,6 +233,19 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginRight: 6,
     marginBottom: 6,
+  },
+  clearButtonInline: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#aaa',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 8,
+    marginBottom: 10,
+  },
+  clearButtonTextInline: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 14,
   },
   searchBar: {
     flexDirection: 'row',

@@ -5,7 +5,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Button,
   Alert,
 } from 'react-native';
 import Slider from '@react-native-community/slider';
@@ -128,11 +127,25 @@ const FiltersScreen = () => {
       )}
 
       <Text style={styles.section}>Date Range</Text>
-      <TouchableOpacity onPress={() => setShowStartPicker(true)}>
-        <Text style={styles.datePicker}>
-          Start Date: {startDate?.toDateString() || 'None'}
-        </Text>
-      </TouchableOpacity>
+
+      <View style={styles.dateButtonsContainer}>
+        <TouchableOpacity
+          onPress={() => setShowStartPicker(true)}
+          style={styles.dateButton}>
+          <Text style={styles.dateButtonText}>
+            Start: {startDate?.toDateString() || 'None'}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => setShowEndPicker(true)}
+          style={styles.dateButton}>
+          <Text style={styles.dateButtonText}>
+            End: {endDate?.toDateString() || 'None'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
       {showStartPicker && (
         <DateTimePicker
           value={startDate || new Date()}
@@ -145,11 +158,6 @@ const FiltersScreen = () => {
         />
       )}
 
-      <TouchableOpacity onPress={() => setShowEndPicker(true)}>
-        <Text style={styles.datePicker}>
-          End Date: {endDate?.toDateString() || 'None'}
-        </Text>
-      </TouchableOpacity>
       {showEndPicker && (
         <DateTimePicker
           value={endDate || new Date()}
@@ -162,11 +170,15 @@ const FiltersScreen = () => {
         />
       )}
 
-      <View style={{marginVertical: 10}}>
-        <Button title="Apply Filters" onPress={applyFilters} />
-      </View>
+      <View style={styles.buttonRow}>
+        <TouchableOpacity style={styles.applyButton} onPress={applyFilters}>
+          <Text style={styles.applyButtonText}>Apply Filters</Text>
+        </TouchableOpacity>
 
-      <Button title="Clear Filters" color="#888" onPress={clearFilters} />
+        <TouchableOpacity style={styles.clearButton} onPress={clearFilters}>
+          <Text style={styles.clearButtonText}>Clear Filters</Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 };
@@ -202,11 +214,51 @@ const styles = StyleSheet.create({
   categoryItem: {
     paddingVertical: 8,
   },
-  datePicker: {
-    fontSize: 16,
+  dateButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 10,
+    marginBottom: 20,
+  },
+  dateButton: {
+    flex: 1,
+    backgroundColor: '#e1eaff',
+    padding: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  dateButtonText: {
     color: '#2c3e86',
-    textDecorationLine: 'underline',
-    marginBottom: 10,
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+    gap: 10,
+  },
+  applyButton: {
+    flex: 1,
+    backgroundColor: '#2c3e86',
+    padding: 12,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  clearButton: {
+    flex: 1,
+    backgroundColor: '#aaa',
+    padding: 12,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  applyButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  clearButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
 
