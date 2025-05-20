@@ -14,54 +14,96 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getBaseUrl} from '../config';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const ACCIDENTS_STORAGE_KEY = 'cachedAccidents';
-
 type Accident = {
   _id: string;
   category: string;
   description: string;
   datetime: string;
-  image_base64: string;
+  image_base64?: string;
   latitude: number;
   longitude: number;
 };
 
-const HomeScreen = ({navigation}: {navigation: any}) => {
+type Filters = {
+  distance: number;
+  selectedCategories: string[];
+  startDate: string | null;
+  endDate: string | null;
+};
+
+const HomeScreen = ({navigation}: any) => {
   const [accidents, setAccidents] = useState<Accident[]>([]);
+  const [allAccidents, setAllAccidents] = useState<Accident[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeFilters, setActiveFilters] = useState<Filters | null>(null);
 
   useEffect(() => {
     const loadAccidents = async () => {
       try {
-        // Check if data already exists in AsyncStorage
-        const cached = await AsyncStorage.getItem(ACCIDENTS_STORAGE_KEY);
+        const token = await AsyncStorage.getItem('authToken');
+        const baseUrl = await getBaseUrl();
+        const res = await axios.get(`${baseUrl}/accidents/?token=${token}`);
+        const data: Accident[] = res.data;
 
-        if (cached) {
-          // Load from cache
-          setAccidents(JSON.parse(cached));
-        } else {
-          // Fetch from API
-          const token = await AsyncStorage.getItem('authToken');
-          const baseUrl = await getBaseUrl();
-          const res = await axios.get(`${baseUrl}/accidents/?token=${token}`);
-          const data = res.data;
+        setAllAccidents(data);
+        setAccidents(data);
 
-          // Save to state and cache
-          setAccidents(data);
-          await AsyncStorage.setItem(
-            ACCIDENTS_STORAGE_KEY,
-            JSON.stringify(data),
-          );
-        }
+        const strippedData = data.map(({image_base64: _img, ...rest}) => rest);
+        await AsyncStorage.setItem(
+          'cachedAccidents',
+          JSON.stringify(strippedData),
+        );
       } catch (err) {
         console.error('Error loading accidents:', err);
       }
     };
 
-    loadAccidents();
-  }, []);
+    const focusHandler = navigation.addListener('focus', () => {
+      loadAccidents();
+    });
 
-  const filteredAccidents = accidents.filter(acc =>
+    return focusHandler;
+  }, [navigation]);
+
+  useEffect(() => {
+    const applyStoredFilters = async () => {
+      const filtersRaw = await AsyncStorage.getItem('activeFilters');
+      if (!filtersRaw) {
+        setAccidents(allAccidents);
+        setActiveFilters(null);
+        return;
+      }
+
+      const filters: Filters = JSON.parse(filtersRaw);
+      setActiveFilters(filters);
+
+      const {selectedCategories, startDate, endDate} = filters;
+
+      const filtered = allAccidents.filter(item => {
+        if (
+          selectedCategories?.length &&
+          !selectedCategories.includes(item.category)
+        )
+          return false;
+
+        if (startDate && new Date(item.datetime) < new Date(startDate))
+          return false;
+
+        if (endDate && new Date(item.datetime) > new Date(endDate))
+          return false;
+
+        return true;
+      });
+
+      setAccidents(filtered);
+    };
+
+    if (allAccidents.length > 0) {
+      applyStoredFilters();
+    }
+  }, [allAccidents]);
+
+  const searchedAccidents = accidents.filter(acc =>
     acc.category.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
@@ -69,10 +111,16 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
     <TouchableOpacity
       onPress={() => navigation.navigate('AccidentScreen', {accident: item})}>
       <View style={styles.card}>
-        <Image
-          source={{uri: `data:image/jpeg;base64,${item.image_base64}`}}
-          style={styles.image}
-        />
+        {item.image_base64 ? (
+          <Image
+            source={{uri: `data:image/jpeg;base64,${item.image_base64}`}}
+            style={styles.image}
+          />
+        ) : (
+          <View style={[styles.image, styles.imagePlaceholder]}>
+            <Text style={styles.imagePlaceholderText}>No image</Text>
+          </View>
+        )}
         <Text style={styles.date}>
           {format(new Date(item.datetime), 'PPpp')}
         </Text>
@@ -87,7 +135,6 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
 
   return (
     <View style={styles.wrapper}>
-      {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Home</Text>
         <TouchableOpacity onPress={() => navigation.navigate('FiltersScreen')}>
@@ -95,7 +142,26 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
         </TouchableOpacity>
       </View>
 
-      {/* Search Bar */}
+      {activeFilters && (
+        <View style={styles.activeFilters}>
+          {activeFilters.selectedCategories?.map(cat => (
+            <Text key={cat} style={styles.filterTag}>
+              {cat}
+            </Text>
+          ))}
+          {activeFilters.startDate && (
+            <Text style={styles.filterTag}>
+              From: {new Date(activeFilters.startDate).toLocaleDateString()}
+            </Text>
+          )}
+          {activeFilters.endDate && (
+            <Text style={styles.filterTag}>
+              To: {new Date(activeFilters.endDate).toLocaleDateString()}
+            </Text>
+          )}
+        </View>
+      )}
+
       <View style={styles.searchBar}>
         <Icon name="search-outline" size={20} color="#777" />
         <TextInput
@@ -106,15 +172,13 @@ const HomeScreen = ({navigation}: {navigation: any}) => {
         />
       </View>
 
-      {/* List */}
       <FlatList
-        data={filteredAccidents}
+        data={searchedAccidents}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={styles.listContainer}
       />
 
-      {/* Floating Add Button */}
       <TouchableOpacity
         style={styles.fab}
         onPress={() => navigation.navigate('NewAccidentScreen')}>
@@ -141,6 +205,22 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#2c3e86',
+  },
+  activeFilters: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 10,
+    gap: 6,
+  },
+  filterTag: {
+    backgroundColor: '#2c3e86',
+    color: '#fff',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 16,
+    fontSize: 12,
+    marginRight: 6,
+    marginBottom: 6,
   },
   searchBar: {
     flexDirection: 'row',
@@ -171,6 +251,15 @@ const styles = StyleSheet.create({
     height: 140,
     borderRadius: 10,
     marginBottom: 10,
+  },
+  imagePlaceholder: {
+    backgroundColor: '#ddd',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imagePlaceholderText: {
+    color: '#555',
+    fontSize: 14,
   },
   category: {
     fontSize: 16,
