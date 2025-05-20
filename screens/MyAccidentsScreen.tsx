@@ -13,6 +13,7 @@ import {format} from 'date-fns';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getBaseUrl} from '../config';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useFocusEffect } from '@react-navigation/native';
 
 interface Accident {
   _id?: string;
@@ -22,6 +23,7 @@ interface Accident {
   image_base64: string;
   latitude: number;
   longitude: number;
+  user: string;
 }
 
 const USER_ACCIDENTS_KEY = 'userAccidentsCache';
@@ -30,6 +32,7 @@ const MyAccidentsScreen = ({navigation}: {navigation: any}) => {
   const [accidents, setAccidents] = useState<Accident[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
 
+  
   useEffect(() => {
     const loadUserAccidents = async () => {
       try {

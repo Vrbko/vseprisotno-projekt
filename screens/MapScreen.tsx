@@ -13,6 +13,7 @@ interface Location {
   description: string;
   category: string;
   datetime:string;
+  user: string;
 }
 
 const MapScreen = () => {
@@ -69,14 +70,15 @@ const MapScreen = () => {
                       category: loc.category,
                       description: loc.description,
                       datetime: loc.datetime,
-                      image_base64: loc.image_base64
+                      image_base64: loc.image_base64,
+                      user: loc.user
                     },
                   })
                 }>
                 <TouchableOpacity style={styles.calloutContainer}>
                   <Text style={styles.calloutTitle}>Accident Location</Text>
 
-                  <Text>id: {loc._id}</Text>
+                 
                   <Text>Category: {loc.category}</Text>
                   <Text>description: {loc.description}</Text>
                   <Text>Datetime: {loc.datetime}</Text>

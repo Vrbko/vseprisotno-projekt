@@ -7,10 +7,18 @@ import torch
 import base64
 from transformers import CLIPProcessor, CLIPModel
 from io import BytesIO
+from fastapi import Query, Body
 
 SECRET = "secret"
 
 router = APIRouter()
+
+def get_user(token: str):
+    try:
+        payload = jwt.decode(token, SECRET, algorithms=["HS256"])
+        return payload["username"]
+    except:
+        raise HTTPException(status_code=401, detail="Invalid token")
 # Load CLIP model and processor once at startup
 model = CLIPModel.from_pretrained("openai/clip-vit-base-patch16")
 processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch16")
@@ -26,7 +34,10 @@ labels = [
 ]
 
 @router.post("/")
-async def classify_image(data: ImageInput):
+async def classify_image(token: str = Query(...), data: ImageInput = Body(...)):
+    user = get_user(token)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
     try:
         # Decode base64 image
         image_data = base64.b64decode(data.image_base64)

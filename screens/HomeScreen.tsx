@@ -22,6 +22,7 @@ type Accident = {
   image_base64?: string;
   latitude: number;
   longitude: number;
+  user: string;
 };
 
 type Filters = {

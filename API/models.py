@@ -19,6 +19,7 @@ class Accident(BaseModel):
     image_base64: str
     latitude: float
     longitude: float
+    user: str
 
     @root_validator(pre=True)
     def convert_id(cls, values: dict[str, any]):

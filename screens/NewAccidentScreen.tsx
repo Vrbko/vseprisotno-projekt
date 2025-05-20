@@ -27,7 +27,7 @@ const NewAccidentScreen = ({
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [datetime, setDatetime] = useState(new Date());
-  const [useCurrentLocation, setUseCurrentLocation] = useState(false);
+  const [useCurrentLocation, setUseCurrentLocation] = useState(true);
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
   const [imageBase64, setImageBase64] = useState('');
@@ -80,57 +80,24 @@ const NewAccidentScreen = ({
     }
   };
 
-  const handleImagePick = async () => {
-    try {
-      const granted =
-        Platform.OS === 'android'
-          ? await PermissionsAndroid.request(
-              PermissionsAndroid.PERMISSIONS.CAMERA,
-              {
-                title: 'Camera Permission',
-                message: 'App needs access to your camera to take a photo.',
-                buttonPositive: 'OK',
-              },
-            )
-          : 'granted';
-
-      if (
-        granted !== PermissionsAndroid.RESULTS.GRANTED &&
-        Platform.OS === 'android'
-      ) {
-        Alert.alert('Permission Denied', 'Camera permission is required.');
-        return;
-      }
-
-      const result = await launchCamera({
-        mediaType: 'photo',
-        includeBase64: true,
-        saveToPhotos: true,
-      });
-
-      if (result.didCancel) {
-        Alert.alert('Cancelled', 'No photo was taken.');
-      } else if (result.errorCode) {
-        Alert.alert('Camera error', result.errorMessage || 'Unknown error');
-      } else if (result.assets && result.assets.length > 0) {
-        setImageBase64(result.assets[0].base64 || '');
-      }
-    } catch (error) {
-      console.error('Camera error:', error);
-      Alert.alert('Camera error', 'Unable to take a photo.');
-    }
-  };
-
+ 
   const handlePost = async () => {
-    if (!category || !description || !latitude || !longitude) {
-      Alert.alert('Validation', 'Please fill in all required fields.');
-      return;
-    }
+   const missingFields = [];
+
+if (!category) missingFields.push('Category');
+if (!description) missingFields.push('Description');
+if (!latitude) missingFields.push('Latitude');
+if (!longitude) missingFields.push('Longitude');
+
+if (missingFields.length > 0) {
+  Alert.alert('Validation', `Please fill in: ${missingFields.join(', ')}`);
+  return;
+}
 
     try {
       const token = await AsyncStorage.getItem('authToken');
       const baseUrl = await getBaseUrl();
-
+      const storedUsername = await AsyncStorage.getItem('username');
       const payload = {
         _id: 'client-temp-id', // ⬅️ Dummy ID to satisfy backend Pydantic model
         category,
@@ -138,7 +105,8 @@ const NewAccidentScreen = ({
         datetime: datetime.toISOString(),
         latitude: parseFloat(latitude),
         longitude: parseFloat(longitude),
-        image_base64: imageBase64 || 'placeholderBase64String',
+        image_base64: imageBase64 || '',
+        user: storedUsername,
       };
 
       const res = await axios.post(
@@ -148,7 +116,9 @@ const NewAccidentScreen = ({
 
       if (res.status === 200) {
         Alert.alert('Success', 'Accident has been submitted.');
-        navigation.goBack();
+        await AsyncStorage.removeItem("cachedAccidents"); // or {} depending on your structure
+        await AsyncStorage.removeItem("userAccidentsCache"); // or {} depending on your structure
+        navigation.navigate("HomeScreen");
       }
     } catch (error: any) {
       console.error(
@@ -214,22 +184,11 @@ const NewAccidentScreen = ({
         <Text>Date/Time: {datetime.toLocaleString()}</Text>
       </View>
 
-      <TouchableOpacity style={styles.cameraButton} onPress={handleImagePick}>
-        <Text style={styles.cameraText}>Take Photo</Text>
-      </TouchableOpacity>
-
-      {imageBase64 ? (
-        <Image
-          source={{uri: `data:image/jpeg;base64,${imageBase64}`}}
-          style={styles.preview}
-        />
-      ) : null}
-
       <View style={styles.buttonRow}>
         <TouchableOpacity
           style={styles.scanButton}
           onPress={() => navigation.navigate('AnalysisScreen')}>
-          <Text style={styles.scanText}>Scan</Text>
+          <Text style={styles.scanText}>AI Scan</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.postButton} onPress={handlePost}>
           <Text style={styles.postText}>Post</Text>
