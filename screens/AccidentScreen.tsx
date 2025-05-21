@@ -29,6 +29,19 @@ const AccidentScreen = ({route, navigation}: {route: any; navigation: any}) => {
     fetchUsername();
   }, []);
 
+  const handleVote = async (type: 'upvote' | 'downvote') => {
+    try {
+      const token = await AsyncStorage.getItem('authToken');
+      const baseUrl = await getBaseUrl();
+      const url = `${baseUrl}/score/${accident._id}/${type}/?token=${token}`;
+
+      await axios.post(url);
+      Alert.alert('Success', `You have ${type}d this accident.`);
+    } catch (err: any) {
+      console.error(err);
+      Alert.alert('Error', err?.response?.data?.detail || 'Failed to submit vote.');
+    }
+  };
   const handleDelete = async () => {
     try {
       const token = await AsyncStorage.getItem('authToken');
@@ -56,7 +69,7 @@ const AccidentScreen = ({route, navigation}: {route: any; navigation: any}) => {
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerText}>Details</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('ReportScreen')}>
+        <TouchableOpacity onPress={() => navigation.navigate('ReportScreen', { accident_id: accident._id })}>
           <Icon name="alert-circle-outline" size={26} color="#2c3e86" />
         </TouchableOpacity>
       </View>
@@ -99,14 +112,14 @@ const AccidentScreen = ({route, navigation}: {route: any; navigation: any}) => {
       <Text style={styles.description}>{accident.description}</Text>
 
       {/* Reactions */}
-      <View style={styles.reactions}>
-        <TouchableOpacity style={styles.reactionButton}>
-          <Icon name="thumbs-up" size={32} color="#2c3e86" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.reactionButton}>
-          <Icon name="thumbs-down" size={32} color="#444" />
-        </TouchableOpacity>
-      </View>
+    <View style={styles.reactions}>
+      <TouchableOpacity style={styles.reactionButton} onPress={() => handleVote('upvote')}>
+        <Icon name="thumbs-up" size={32} color="#2c3e86" />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.reactionButton} onPress={() => handleVote('downvote')}>
+        <Icon name="thumbs-down" size={32} color="#444" />
+      </TouchableOpacity>
+    </View>
 
       {/* Delete Button (only if user owns it) */}
       {username === accident.user && (

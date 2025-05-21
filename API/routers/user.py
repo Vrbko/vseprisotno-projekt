@@ -17,8 +17,28 @@ def get_user(token: str):
 @router.get("/stats")
 async def user_stats(token: str = Query(...)):
     user = get_user(token)
-    count = await db.accidents.count_documents({"user": user})
-    return {"total_accidents": count}
+
+    # Count accidents created by the user
+    accident_count = await db.accidents.count_documents({"user": user})
+
+    # Count reports submitted by the user
+    report_count = await db.reports.count_documents({"user": user})
+
+    # Aggregate upvotes and downvotes from all score documents for this user
+    scores_cursor = db.scores.find({"user": user})
+    total_upvotes = 0
+    total_downvotes = 0
+
+    async for score in scores_cursor:
+        total_upvotes += score.get("upvotes", 0)
+        total_downvotes += score.get("downvotes", 0)
+
+    return {
+        "total_accidents": accident_count,
+        "total_reports": report_count,
+        "total_upvotes": total_upvotes,
+        "total_downvotes": total_downvotes,
+    }
 
 @router.post("/settings")
 async def update_settings(settings: UpdateSettings, token: str = Query(...)):

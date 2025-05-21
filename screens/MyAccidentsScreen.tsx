@@ -37,18 +37,11 @@ const MyAccidentsScreen = ({navigation}: {navigation: any}) => {
     const loadUserAccidents = async () => {
       try {
         // Try loading cached data first
-        const cached = await AsyncStorage.getItem(USER_ACCIDENTS_KEY);
-        if (cached) {
-          setAccidents(JSON.parse(cached));
-          return;
-        }
+      
 
         // If no cache, fetch from API
         const token = await AsyncStorage.getItem('authToken');
-        if (!token) {
-          console.warn('Missing token');
-          return;
-        }
+        
 
         const baseUrl = await getBaseUrl();
         const res = await axios.get(`${baseUrl}/accidents/user`, {

@@ -34,3 +34,20 @@ class UpdateSettings(BaseModel):
 class ImageInput(BaseModel):
     image_base64: str
 
+class Report(BaseModel):
+    accident_id: str
+    report_cause: str
+    extra_details: Optional[str] = None
+    active: bool
+
+
+class Score(BaseModel):
+    accident_id: str
+    number_of_reports: int
+    upvotes: int
+    downvotes: int
+
+
+class ScoreUpdate(BaseModel):
+    upvotes: Optional[int] = None
+    downvotes: Optional[int] = None

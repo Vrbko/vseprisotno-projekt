@@ -7,6 +7,9 @@ import {getBaseUrl} from '../config';
 const ProfileScreen = ({navigation}: {navigation: any}) => {
   const [username, setUsername] = useState('');
   const [accidentCount, setAccidentCount] = useState(0);
+  const [reports, setReportCount] = useState(0);
+  const [upvotes, setUpvoteCount] = useState(0);
+  const [downvotes, setDownvoteCount] = useState(0);
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [darkMode, setDarkMode] = useState(false);
 
@@ -32,6 +35,9 @@ const ProfileScreen = ({navigation}: {navigation: any}) => {
         const res = await fetch(`${baseUrl}/user/stats?token=${token}`);
         const data = await res.json();
         setAccidentCount(data.total_accidents || 0);
+        setUpvoteCount(data.total_upvotes || 0);
+        setDownvoteCount(data.total_downvotes || 0);
+        setReportCount(data.total_reports || 0);
       } catch (error) {
         console.error('Error fetching stats:', error);
       }
@@ -68,7 +74,16 @@ const ProfileScreen = ({navigation}: {navigation: any}) => {
         {username || 'User'}
       </Text>
       <Text style={[styles.stat, darkMode && {color: '#ccc'}]}>
-        Total Accidents: {accidentCount}
+        My Reported Accidents: {accidentCount}
+      </Text>
+      <Text style={[styles.stat, darkMode && {color: '#ccc'}]}>
+        My Reports: {reports}
+      </Text>
+      <Text style={[styles.stat, darkMode && {color: '#ccc'}]}>
+        My Accident downvotes: {downvotes}
+      </Text>
+      <Text style={[styles.stat, darkMode && {color: '#ccc'}]}>
+        My Accident upvotes: {upvotes}
       </Text>
     </View>
   );

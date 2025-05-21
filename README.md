@@ -12,12 +12,12 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 ## TODO
 Vizualno
 ```
-Kartice - Večji Front
-Slika & Maps v sliderju ( v details ) če obstaja slika
-Label za input fielde
-Map pins (size, barva, images? - logos)
-Map kartice - mogoče
-Iskanje po mapi ?
+Kartice - Večji Front🚫
+Slika & Maps v sliderju ( v details ) če obstaja slika🚫
+Label za input fielde🚫
+Map pins (size, barva, images? - logos)🚫
+Map kartice - mogoče🚫
+Iskanje po mapi ? 🚫
 Onlick odpre detajle ✅
 
 Implementacija Screeni
@@ -29,31 +29,31 @@ Implementacija Screeni
     Maps✅
     Home/Accidents✅
     Accident Details✅
-    Report ✅ / še api 
+    Report ✅ / še api ✅
     Search✅
-    Filter
-    Points sistem
+    Filter✅
+    Points sistem 🚫
 
     My Accidents✅
     My Accident details✅
-    Edit my Accidents
+    Edit my Accidents🚫
 
     New Accident✅
     Analyze Accident (autocomplete z ml api)✅
 
     User ✅
-    User Settings
-    User slika
+    User Settings✅
+    User slika✅
 
-Design 
-Dark mode 
+Design 🚫
+Dark mode 🚫
 ```
  
-API  - (python + mongo najboljse?) - publish na render? 🚫 lokalno - prevlki file, mogoče na koncu
+API  - (python + mongo najboljse?) - publish na render? 🚫 lokalno - prevlki file, mogoče na koncu, 10.0.2.2 za predstavitev
 ```
 Register ✅
 Login ✅
-User settings? Slika npr, al bo to lokalno
+User settings? Slika npr, al bo to lokalno✅
 
 Accidents CRUD ✅
 Points System

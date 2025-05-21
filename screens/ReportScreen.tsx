@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,15 +8,47 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+import {getBaseUrl} from '../config';
 
-const ReportScreen = () => {
+const ReportScreen = ({ navigation, route }: any) => {
+
   const [cause, setCause] = useState('');
   const [details, setDetails] = useState('');
   const [isActive, setIsActive] = useState(true);
 
-  const handleReport = () => {
-    Alert.alert('Report Sent', 'Your report has been submitted.');
-    // You can implement the actual submission logic here
+  const handleReport = async () => {
+    try {
+      const token = await AsyncStorage.getItem('authToken');
+      const baseUrl = await getBaseUrl();
+      const accident_id = route.params?.accident_id;
+
+      if (!accident_id ) {
+        Alert.alert('Error', 'Accident ID  required.' + accident_id);
+        return;
+      }
+        if ( !cause) {
+        Alert.alert('Error', 'Cause are required.');
+        return;
+      }
+
+      const reportPayload = {
+        accident_id,
+        report_cause: cause,
+        extra_details: details,
+        active: isActive,
+      };
+
+      await axios.post(`${baseUrl}/report/?token=${token}`, reportPayload);
+
+      Alert.alert('Report Sent', 'Your report has been submitted.');
+      navigation.goBack();
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Failed to submit the report.');
+    }
   };
 
   return (
@@ -41,7 +73,7 @@ const ReportScreen = () => {
         value={isActive}
         onValueChange={setIsActive}
         thumbColor={isActive ? '#fff' : '#ccc'}
-        trackColor={{true: '#2c3e86', false: '#ccc'}}
+        trackColor={{ true: '#2c3e86', false: '#ccc' }}
       />
 
       <TouchableOpacity style={styles.button} onPress={handleReport}>
@@ -52,7 +84,7 @@ const ReportScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1, padding: 24, backgroundColor: '#f0f0f0'},
+  container: { flex: 1, padding: 24, backgroundColor: '#f0f0f0' },
   header: {
     fontSize: 28,
     fontWeight: 'bold',
@@ -78,7 +110,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
   },
-  buttonText: {color: '#fff', fontSize: 16, fontWeight: '600'},
+  buttonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
 });
 
 export default ReportScreen;
