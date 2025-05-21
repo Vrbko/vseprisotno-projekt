@@ -17,46 +17,60 @@ import {getBaseUrl} from '../config';
 const AnalysisScreen = ({navigation}: {navigation: any}) => {
   const [imageBase64, setImageBase64] = useState<string>('');
 
-  const handleImagePick = async () => {
-    try {
-      const granted =
-        Platform.OS === 'android'
-          ? await PermissionsAndroid.request(
-              PermissionsAndroid.PERMISSIONS.CAMERA,
-              {
-                title: 'Camera Permission',
-                message: 'App needs access to your camera to take a photo.',
-                buttonPositive: 'OK',
-              },
-            )
-          : 'granted';
+const handleImagePick = async () => {
+  try {
+    const granted =
+      Platform.OS === 'android'
+        ? await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            {
+              title: 'Camera Permission',
+              message: 'App needs access to your camera to take a photo.',
+              buttonPositive: 'OK',
+            },
+          )
+        : 'granted';
 
-      if (
-        granted !== PermissionsAndroid.RESULTS.GRANTED &&
-        Platform.OS === 'android'
-      ) {
-        Alert.alert('Permission Denied', 'Camera permission is required.');
-        return;
-      }
-
-      const result = await launchCamera({
-        mediaType: 'photo',
-        includeBase64: true,
-        saveToPhotos: true,
-      });
-
-      if (result.didCancel) {
-        Alert.alert('Cancelled', 'No photo was taken.');
-      } else if (result.errorCode) {
-        Alert.alert('Camera error', result.errorMessage || 'Unknown error');
-      } else if (result.assets && result.assets.length > 0) {
-        setImageBase64(result.assets[0].base64 || '');
-      }
-    } catch (error) {
-      console.error('Camera error:', error);
-      Alert.alert('Camera error', 'Unable to take a photo.');
+    if (
+      granted !== PermissionsAndroid.RESULTS.GRANTED &&
+      Platform.OS === 'android'
+    ) {
+      Alert.alert('Permission Denied', 'Camera permission is required.');
+      return;
     }
-  };
+
+    const result = await launchCamera({
+      mediaType: 'photo',
+      includeBase64: true,
+      maxWidth: 800,         // ✅ Resize for memory efficiency
+      maxHeight: 800,
+      quality: 0.7,          // ✅ Compress to reduce base64 size
+      saveToPhotos: false,
+    });
+
+    if (result.didCancel) {
+      console.log('User cancelled camera');
+      return;
+    }
+
+    if (result.errorCode) {
+      console.error('Camera error:', result.errorMessage);
+      Alert.alert('Camera Error', result.errorMessage || 'Unknown error');
+      return;
+    }
+
+    const asset = result.assets?.[0];
+    if (!asset || !asset.base64) {
+      Alert.alert('Error', 'Failed to capture or process image.');
+      return;
+    }
+
+    setImageBase64(asset.base64);
+  } catch (error) {
+    console.error('Unexpected camera error:', error);
+    Alert.alert('Error', 'Something went wrong while using the camera.');
+  }
+};
 
   const handleAnalyze = async () => {
     if (!imageBase64) {

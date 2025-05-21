@@ -84,9 +84,6 @@ const MyAccidentsScreen = ({navigation}: {navigation: any}) => {
     <View style={styles.wrapper}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>My Accidents</Text>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon name="arrow-back-outline" size={26} color="#333" />
-        </TouchableOpacity>
       </View>
 
       <View style={styles.searchBar}>
