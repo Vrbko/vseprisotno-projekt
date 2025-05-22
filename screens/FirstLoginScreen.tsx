@@ -22,11 +22,9 @@ const FirstLoginScreen = ({ navigation }: { navigation: any }) => {
   const flatListRef = useRef<FlatList>(null);
 
   const handleNext = () => {
-    if (currentIndex < slides.length - 1) {
-      flatListRef.current?.scrollToIndex({ index: currentIndex + 1 });
-    } else {
+ 
       navigation.navigate('Login');
-    }
+    
   };
 
   const onViewableItemsChanged = useRef(({ viewableItems }: any) => {
@@ -37,16 +35,19 @@ const FirstLoginScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <View style={styles.container}>
-      {/* Header Arrow */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={handleNext}>
-          <Icon name="arrow-forward" size={28} color="black" />
-        </TouchableOpacity>
-      </View>
+ 
+<View style={styles.header}>
+  {/* Placeholder for left space */}
+  <View style={{ width: 28 }} />
 
-      {/* Title */}
-      <Text style={styles.title}>Welcome</Text>
+  {/* Centered Title */}
+  <Text style={styles.title}>Welcome</Text>
 
+  {/* Icon aligned right */}
+  <TouchableOpacity onPress={handleNext}>
+    <Icon name="arrow-forward" size={28} color="black" />
+  </TouchableOpacity>
+</View>
       {/* Swipable Image */}
       <FlatList
         ref={flatListRef}
@@ -83,18 +84,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#EDEDED',
     alignItems: 'center',
   },
-  header: {
-    position: 'absolute',
-    top: 50,
-    right: 20,
-    zIndex: 1,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginTop: 80,
-    marginBottom: 20,
-  },
+header: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  paddingHorizontal: 16,
+  paddingTop: 80,
+},
+title: {
+  flex: 1,
+  textAlign: 'center',
+  fontSize: 30,
+  fontWeight: 'bold',
+},
   imageContainer: {
     width: width,
     alignItems: 'center',

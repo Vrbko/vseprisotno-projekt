@@ -21,6 +21,7 @@ import AccidentScreen from './screens/AccidentScreen';
 import FiltersScreen from './screens/FiltersScreen';
 import ReportScreen from './screens/ReportScreen';
 import NewAccidentScreen from './screens/NewAccidentScreen';
+import EditAccidentScreen from './screens/EditAccidentScreen';
 import AnalysisScreen from './screens/AnalysisScreen';
 import FullImageScreen from './screens/FullImageScreen';
 
@@ -45,10 +46,8 @@ const App = () => {
             <Stack.Screen name="Register" component={RegisterScreen} />
             <Stack.Screen name="HomeScreen" component={HomeTabs} />
             <Stack.Screen name="AccidentScreen" component={AccidentScreen} />
-            <Stack.Screen
-              name="NewAccidentScreen"
-              component={NewAccidentScreen}
-            />
+            <Stack.Screen name="NewAccidentScreen" component={NewAccidentScreen} />
+            <Stack.Screen name="EditAccidentScreen" component={EditAccidentScreen} />
             <Stack.Screen name="AnalysisScreen" component={AnalysisScreen} />
             <Stack.Screen name="ReportScreen" component={ReportScreen} />
             <Stack.Screen name="FiltersScreen" component={FiltersScreen} />

@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 
 interface Location {
+  image_base64: any;
   _id: string;
   latitude: number;
   longitude: number;
@@ -16,10 +17,9 @@ interface Location {
   user: string;
 }
 
-const MapScreen = () => {
+const MapScreen = ({ navigation }: { navigation: any }) => {
   const [locations, setLocations] = useState<Location[]>([]);
   const [loading, setLoading] = useState(true);
-  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchLocations = async () => {
@@ -46,11 +46,11 @@ const MapScreen = () => {
         <MapView
           provider={PROVIDER_GOOGLE}
           style={styles.map}
-          initialRegion={{
+          region={{
             latitude: 46.558942,
             longitude: 15.638063,
-            latitudeDelta: 0.042,
-            longitudeDelta: 0.042,
+            latitudeDelta: 0.020,
+            longitudeDelta: 0.020,
           }}>
           {locations.map(loc => (
             <Marker

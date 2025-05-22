@@ -15,15 +15,12 @@ import {getBaseUrl} from '../config'; // assuming this exists
 import {useEffect, useState} from 'react';
 import { Region } from 'react-native-maps';
 
-
 const screenHeight = Dimensions.get('window').height;
 
-const AccidentScreen = ({route, navigation}: {route: any; navigation: any}) => {
+const EditAccidentScreen = ({route, navigation}: {route: any; navigation: any}) => {
   const {accident} = route.params;
   const [username, setUsername] = useState<string | null>(null);
   const [region, setRegion] = useState<Region | null>(null);
-
-
   useEffect(() => {
     const fetchUsername = async () => {
       const storedUsername = await AsyncStorage.getItem('username');
@@ -32,16 +29,17 @@ const AccidentScreen = ({route, navigation}: {route: any; navigation: any}) => {
 
     fetchUsername();
   }, []);
-      useEffect(() => {
-      if (accident?.latitude && accident?.longitude) {
-        setRegion({
-          latitude: accident.latitude,
-          longitude: accident.longitude,
-          latitudeDelta: 0.005,
-          longitudeDelta: 0.005,
-        });
-      }
-    }, [accident]);
+    useEffect(() => {
+    if (accident?.latitude && accident?.longitude) {
+      setRegion({
+        latitude: accident.latitude,
+        longitude: accident.longitude,
+        latitudeDelta: 0.005,
+        longitudeDelta: 0.005,
+      });
+    }
+  }, [accident]);
+
   const handleVote = async (type: 'upvote' | 'downvote') => {
     try {
       const token = await AsyncStorage.getItem('authToken');
@@ -85,17 +83,13 @@ const AccidentScreen = ({route, navigation}: {route: any; navigation: any}) => {
 return (
   <View style={styles.container}>
     {/* Header */}
-  <View style={styles.navHeader}>
-  <TouchableOpacity style={styles.sideIcon} onPress={() => navigation.goBack()}>
-    <Icon name="arrow-back-outline" size={26} color="#2c3e86" />
-  </TouchableOpacity>
-
-  <Text style={styles.headerTitle}>Accident</Text>
-
-  <TouchableOpacity style={styles.sideIcon} onPress={() => navigation.navigate('ReportScreen', { accident_id: accident._id })}>
-    <Icon name="alert-circle-outline" size={26} color="#2c3e86" />
-  </TouchableOpacity>
-</View>
+    <View style={styles.navHeader}>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Icon name="arrow-back-outline" size={26} color="#2c3e86" />
+      </TouchableOpacity>
+      <Text style={styles.headerTitle}>Edit Accident</Text>
+      <View style={{ width: 26 }} /> 
+    </View>
 
  <View style={styles.mapWrapper}>
   {region && (
@@ -118,14 +112,7 @@ return (
     {/* Title & Link */}
     <View style={styles.row}>
       <Text style={styles.accidentTitle}>Accident 1</Text>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('FullImageScreen', {
-            imageUri: `data:image/jpeg;base64,${accident.image_base64}`,
-          })
-        }>
-        <Text style={styles.link}>View Image</Text>
-      </TouchableOpacity>
+
     </View>
 
     {/* Description */}
@@ -135,25 +122,13 @@ return (
     </Text>
 
 
+                {/* Delete Button (only if user owns it) */}
+      {username === accident.user && (
+        <TouchableOpacity style={styles.editButton} onPress={confirmDelete}>
+          <Text style={styles.editButtonText}>Delete</Text>
+        </TouchableOpacity>
+      )}
 
-            {/* Reactions */}
-          <View style={styles.reactions}>
-            <TouchableOpacity style={styles.reactionButton} onPress={() => handleVote('upvote')}>
-              <Icon name="thumbs-up" size={32} color="#2c3e86" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.reactionButton} onPress={() => handleVote('downvote')}>
-              <Icon name="thumbs-down" size={32} color="#444" />
-            </TouchableOpacity>
-          </View>
-
-
-    {/* Edit Button */}
-    <TouchableOpacity
-      style={styles.editButton}
-      onPress={() => navigation.navigate('EditAccidentScreen', { accident: accident })}
-    >
-      <Text style={styles.editButtonText}>Edit</Text>
-    </TouchableOpacity>
   </View>
 );
 }
@@ -270,11 +245,6 @@ editButtonText: {
   color: '#fff',
   fontWeight: 'bold',
 },
-
-sideIcon: {
-  width: 40,
-  alignItems: 'center',
-},
 });
 
-export default AccidentScreen;
+export default EditAccidentScreen;

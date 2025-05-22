@@ -1,4 +1,4 @@
-const endpoints = ['http://164.8.205.36:8080', 'http://192.168.1.80:8080'];
+const endpoints = [ 'http://10.0.2.2:8080'];
 
 let activeBaseUrl: string | null = null;
 
