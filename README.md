@@ -9,6 +9,18 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 [Wireframe](https://www.figma.com/board/3pQpSxsKGlHkchWTyvFPKg/Wireframe?t=ZYRmYgJYtoxhqbdM-0)
 
 
+
+## TODO Konzultacija
+```
+	maps iskanje
+	upvotes/downvots prikaz
+	notifications nove nesreče npr radius 10 km
+	keep user logged in 
+	logout?
+	AI scan če je similarity pod 50% pol (undefined)
+	backticks za navigation
+```
+
 ## TODO
 Vizualno
 ```
