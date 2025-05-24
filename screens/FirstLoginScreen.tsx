@@ -8,14 +8,15 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const { width } = Dimensions.get('window');
 
 const slides = [
-  { id: '1', image: require('../assets/1.png') },
-  { id: '2', image: require('../assets/2.png') },
-  { id: '3', image: require('../assets/3.png') },
+  { id: '1', image: require('../assets/1.png'), text: 'Take Images' },
+  { id: '2', image: require('../assets/2.png'), text: 'Share' },
+  { id: '3', image: require('../assets/3.png'), text: 'Be Safe' },
 ];
 const FirstLoginScreen = ({ navigation }: { navigation: any }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -58,11 +59,12 @@ const FirstLoginScreen = ({ navigation }: { navigation: any }) => {
         keyExtractor={(item) => item.id}
         onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={{ viewAreaCoveragePercentThreshold: 50 }}
-        renderItem={({ item }) => (
-          <View style={styles.imageContainer}>
-            <Image source={item.image} style={styles.image} resizeMode="cover" />
-          </View>
-        )}
+renderItem={({ item }) => (
+  <View style={styles.imageContainer}>
+    <Image source={item.image} style={styles.image} resizeMode="cover" />
+    <Text style={styles.caption}>{item.text}</Text>
+  </View>
+)}
       />
 
       {/* Pagination Dots (moved close to image) */}
@@ -111,8 +113,15 @@ title: {
   dotsContainer: {
     flexDirection: 'row',
     marginTop: 25,  // 🔹 More gap between image & dots
-    marginBottom: 300,  // 🔹 Less extreme bottom space (was 400)
+    marginBottom: 280,  // 🔹 Less extreme bottom space (was 400)
   },
+  caption: {
+  marginTop: 20,
+  fontSize: 22,
+  fontWeight: '600',
+  color: '#333',
+  textAlign: 'center',
+},
   dot: {
     width: 13,
     height: 13,

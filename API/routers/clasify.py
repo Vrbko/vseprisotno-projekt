@@ -56,8 +56,13 @@ async def classify_image(token: str = Query(...), data: ImageInput = Body(...)):
     top_idx = torch.argmax(probs, dim=-1).item()
     predicted_label = labels[top_idx]
     confidence = probs[0, top_idx].item()
-
-    return {
-        "predicted_label": predicted_label,
+    if(confidence < 0.4 ):
+        return {
+        "predicted_label": "unable to label properly",
         "confidence": confidence
     }
+    else:
+        return {
+            "predicted_label": predicted_label,
+            "confidence": confidence
+        }

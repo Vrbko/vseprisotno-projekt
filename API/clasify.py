@@ -48,4 +48,11 @@ for filename in os.listdir(image_folder):
         predicted_label_idx = torch.argmax(probs, dim=-1).item()
         predicted_label = labels[predicted_label_idx]
 
+        confidence = probs[0, predicted_label_idx].item()
         print(f"{filename}: {predicted_label}")
+        logits = outputs.logits_per_image
+        probs = logits.softmax(dim=-1)
+        top_idx = torch.argmax(probs, dim=-1).item()
+        predicted_label = labels[top_idx]
+        confidence = probs[0, top_idx].item()
+        print("condidence" ,confidence)
