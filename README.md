@@ -13,12 +13,12 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 ## TODO Konzultacija
 ```
 	maps iskanje
-	upvotes/downvots prikaz
+	upvotes/downvots prikaz✅
 	notifications nove nesreče npr radius 10 km
-	keep user logged in 
-	logout?
-	AI scan če je similarity pod 50% pol (undefined)
-	backticks za navigation
+	keep user logged in ✅
+	logout?✅
+	AI scan če je similarity pod 50% pol (undefined)✅
+	backticks za navigation✅
 ```
 
 ## TODO

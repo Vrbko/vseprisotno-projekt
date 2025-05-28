@@ -136,15 +136,18 @@ return (
 
 
 
-            {/* Reactions */}
-          <View style={styles.reactions}>
-            <TouchableOpacity style={styles.reactionButton} onPress={() => handleVote('upvote')}>
-              <Icon name="thumbs-up" size={32} color="#2c3e86" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.reactionButton} onPress={() => handleVote('downvote')}>
-              <Icon name="thumbs-down" size={32} color="#444" />
-            </TouchableOpacity>
-          </View>
+   {/* Reactions */}
+<View style={styles.reactions}>
+  <TouchableOpacity style={styles.reactionButton} onPress={() => handleVote('upvote')}>
+    <Icon name="thumbs-up" size={28} color="#2c3e86" />
+    <Text style={styles.reactionCount}>{accident.upvotes}</Text>
+  </TouchableOpacity>
+
+  <TouchableOpacity style={styles.reactionButton} onPress={() => handleVote('downvote')}>
+    <Icon name="thumbs-down" size={28} color="#444" />
+    <Text style={styles.reactionCount}>{accident.downvotes}</Text>
+  </TouchableOpacity>
+</View>
 
 
     {/* Edit Button */}
@@ -215,6 +218,12 @@ const styles = StyleSheet.create({
   alignItems: 'center',
   width: 130,
   height:50,
+},
+reactionCount: {
+  marginTop: 6,
+  fontSize: 16,
+  fontWeight: '600',
+  color: '#333',
 },
 deleteButtonText: {
   color: '#fff',

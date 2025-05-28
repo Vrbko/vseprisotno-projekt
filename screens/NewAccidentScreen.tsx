@@ -16,6 +16,7 @@ import axios from 'axios';
 import {getBaseUrl} from '../config';
 import Geolocation from '@react-native-community/geolocation';
 import {launchCamera} from 'react-native-image-picker';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const NewAccidentScreen = ({
   navigation,
@@ -136,7 +137,13 @@ if (missingFields.length > 0) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>New Accident</Text>
+     <View style={styles.navHeader}>
+       <TouchableOpacity onPress={() => navigation.goBack()}>
+         <Icon name="arrow-back-outline" size={26} color="#2c3e86" />
+       </TouchableOpacity>
+       <Text style={styles.headerTitle}>New Accident</Text>
+       <View style={{ width: 26 }} /> 
+     </View>
 
       <TextInput
         placeholder="Category"
@@ -253,6 +260,17 @@ const styles = StyleSheet.create({
     marginRight: 10,
     alignItems: 'center',
   },
+    navHeader: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  marginBottom: 30,
+},
+headerTitle: {
+  fontSize: 22,
+  fontWeight: 'bold',
+  color: '#2c3e86',
+},
   scanText: {
     fontSize: 16,
     color: '#333',

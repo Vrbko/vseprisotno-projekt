@@ -14,7 +14,11 @@ import {launchImageLibrary} from 'react-native-image-picker';
 const EditProfileScreen = ({navigation}: {navigation: any}) => {
   const [darkModeEnabled, setDarkModeEnabled] = useState(false);
   const [profileImage, setProfileImage] = useState<string | null>(null);
-
+const handleLogout = async () => {
+  await AsyncStorage.removeItem('authToken');
+  await AsyncStorage.removeItem('username');
+  navigation.replace('Login');
+};
   useEffect(() => {
     const loadSettings = async () => {
       const image = await AsyncStorage.getItem('profileImage');
@@ -56,8 +60,8 @@ const EditProfileScreen = ({navigation}: {navigation: any}) => {
         <View style={{width: 24}} />
       </View>
 
-      <TouchableOpacity onPress={handlePickPhoto}>
-        <Text style={styles.linkText}>Select Photo</Text>
+      <TouchableOpacity style={styles.logoutButton} onPress={handlePickPhoto}>
+        <Text style={styles.logoutButtonText}>Select Photo</Text>
       </TouchableOpacity>
 
       {profileImage && (
@@ -67,15 +71,11 @@ const EditProfileScreen = ({navigation}: {navigation: any}) => {
         />
       )}
 
-      <View style={styles.switchRow}>
-        <Text style={styles.optionText}>Dark Mode</Text>
-        <Switch
-          value={darkModeEnabled}
-          onValueChange={toggleDarkMode}
-          thumbColor={darkModeEnabled ? '#fff' : '#ccc'}
-          trackColor={{true: '#2c3e86', false: '#ccc'}}
-        />
-      </View>
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+  <Text style={styles.logoutButtonText}>Log Out</Text>
+</TouchableOpacity>
+
+
     </View>
   );
 };
@@ -108,6 +108,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 24,
   },
+logoutButton: {
+  marginTop: 40,
+  backgroundColor: '#888', // Gray color
+  paddingVertical: 12,
+  paddingHorizontal: 24,
+  borderRadius: 8,
+  alignItems: 'center',
+  alignSelf: 'center', // Center the button
+  width: '40%', // Control the width
+},
+logoutButtonText: {
+  color: '#fff',
+  fontSize: 14,
+  fontWeight: '600',
+},
 });
 
 export default EditProfileScreen;

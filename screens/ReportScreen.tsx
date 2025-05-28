@@ -12,6 +12,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import {getBaseUrl} from '../config';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const ReportScreen = ({ navigation, route }: any) => {
 
@@ -52,8 +53,14 @@ const ReportScreen = ({ navigation, route }: any) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Report</Text>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Icon name="arrow-back" size={24} color="#333" />
+            </TouchableOpacity>
+            <Text style={styles.headerText}>Report</Text>
+            <View style={{width: 24}} />
+          </View>
 
       <TextInput
         placeholder="Report Cause"
@@ -84,13 +91,17 @@ const ReportScreen = ({ navigation, route }: any) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 24, backgroundColor: '#f0f0f0' },
+  container: {
+    flex: 1,
+    paddingTop: 60,
+    paddingHorizontal: 24,
+    backgroundColor: '#f0f0f0',
+  },
   header: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#2c3e86',
-    textAlign: 'center',
-    marginBottom: 30,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 40,
   },
   input: {
     backgroundColor: '#fff',
@@ -111,6 +122,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
+    headerText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#2c3e86',
+  },
 });
 
 export default ReportScreen;

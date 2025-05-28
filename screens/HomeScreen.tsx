@@ -23,6 +23,9 @@ type Accident = {
   latitude: number;
   longitude: number;
   user: string;
+  upvotes: number;
+  downvotes:number;
+  number_of_reports: number;
 };
 
 type Filters = {
@@ -109,29 +112,33 @@ const HomeScreen = ({navigation}: any) => {
   );
 
   const renderItem = ({item}: {item: Accident}) => (
-    <TouchableOpacity
-      onPress={() => navigation.navigate('AccidentScreen', {accident: item})}>
-      <View style={styles.card}>
-        {item.image_base64 ? (
-          <Image
-            source={{uri: `data:image/jpeg;base64,${item.image_base64}`}}
-            style={styles.image}
-          />
-        ) : (
-          <View style={[styles.image, styles.imagePlaceholder]}>
-            <Text style={styles.imagePlaceholderText}>No image</Text>
-          </View>
-        )}
-        <Text style={styles.date}>
-          {format(new Date(item.datetime), 'PPpp')}
-        </Text>
-        <Text style={styles.category}>Accident: {item.category}</Text>
-        <Text style={styles.description}>{item.description}</Text>
-        <Text style={styles.location}>
-          Lat: {item.latitude}, Lon: {item.longitude}
-        </Text>
+<TouchableOpacity
+  onPress={() => navigation.navigate('AccidentScreen', { accident: item })}>
+  <View style={styles.card}>
+    {item.image_base64 ? (
+      <Image
+        source={{ uri: `data:image/jpeg;base64,${item.image_base64}` }}
+        style={styles.image}
+      />
+    ) : (
+      <View style={[styles.image, styles.imagePlaceholder]}>
+        <Text style={styles.imagePlaceholderText}>No image</Text>
       </View>
-    </TouchableOpacity>
+    )}
+    <Text style={styles.date}>
+      {format(new Date(item.datetime), 'PPpp')}
+    </Text>
+    <Text style={styles.category}>Accident: {item.category}</Text>
+    <Text style={styles.description}>{item.description}</Text>
+
+    {/* 👇 Cleaner stats display */}
+    <View style={styles.statsRow}>
+      <Text style={styles.stat}> <Icon name="thumbs-up" size={26} color="#2c3e86" /> {item.upvotes}</Text>
+      <Text style={styles.stat}> <Icon name="thumbs-up" size={26} color="#2c3e86" /> {item.downvotes}</Text>
+      <Text style={styles.stat}> <Icon name="alert-circle-outline" size={26} color="#2c3e86" /> {item.number_of_reports}</Text>
+    </View>
+  </View>
+</TouchableOpacity>
   );
 
   return (
@@ -306,6 +313,18 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#999',
   },
+  statsRow: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  marginTop: 8,
+  paddingHorizontal: 10,
+},
+
+stat: {
+  fontSize: 14,
+  color: '#333',
+  fontWeight: '600',
+},
   fab: {
     position: 'absolute',
     right: 20,

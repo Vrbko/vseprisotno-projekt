@@ -13,6 +13,7 @@ import {launchCamera} from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {getBaseUrl} from '../config';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const AnalysisScreen = ({navigation}: {navigation: any}) => {
   const [imageBase64, setImageBase64] = useState<string>('');
@@ -109,7 +110,13 @@ const handleImagePick = async () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Analysis</Text>
+         <View style={styles.navHeader}>
+             <TouchableOpacity onPress={() => navigation.goBack()}>
+               <Icon name="arrow-back-outline" size={26} color="#2c3e86" />
+             </TouchableOpacity>
+             <Text style={styles.headerTitle}>Accident Analysis</Text>
+             <View style={{ width: 26 }} /> 
+           </View>
 
       {imageBase64 ? (
         <Image
@@ -176,6 +183,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
   },
+    navHeader: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  marginBottom: 60,
+},
+headerTitle: {
+  fontSize: 22,
+  fontWeight: 'bold',
+  color: '#2c3e86',
+},
 });
 
 export default AnalysisScreen;

@@ -8,6 +8,7 @@ import {
   FlatList,
   Dimensions,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -22,9 +23,15 @@ const FirstLoginScreen = ({ navigation }: { navigation: any }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
 
-  const handleNext = () => {
- 
-      navigation.navigate('Login');
+  const handleNext = async () => {
+
+      const token = await AsyncStorage.getItem('authToken');
+      if (token) {
+        navigation.replace('HomeScreen');
+      } else {
+        navigation.replace('Login');
+      }
+  
     
   };
 
