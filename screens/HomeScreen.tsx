@@ -13,6 +13,7 @@ import {format} from 'date-fns';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getBaseUrl} from '../config';
 import Icon from 'react-native-vector-icons/Ionicons';
+import useLocationTracker from './LocationTracker'; // ✅ Added for location notifications
 
 type Accident = {
   _id: string;
@@ -40,6 +41,8 @@ const HomeScreen = ({navigation}: any) => {
   const [allAccidents, setAllAccidents] = useState<Accident[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilters, setActiveFilters] = useState<Filters | null>(null);
+
+  useLocationTracker(); // ✅ Activate background location-based accident checks
 
   useEffect(() => {
     const loadAccidents = async () => {

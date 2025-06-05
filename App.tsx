@@ -5,8 +5,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {View, StyleSheet} from 'react-native';
+import notifee, {AndroidImportance} from '@notifee/react-native';
 
-// Import Screens
+// Screens
 import HomeScreen from './screens/HomeScreen';
 import SearchScreen from './screens/SearchScreen';
 import MyAccidentsScreen from './screens/MyAccidentsScreen';
@@ -32,22 +33,52 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isFirstTime, setIsFirstTime] = useState(true);
 
+  useEffect(() => {
+    async function setupNotifications() {
+      console.log('🔧 Requesting notification permissions...');
+      await notifee.requestPermission();
+
+      await notifee.createChannel({
+        id: 'accidents',
+        name: 'Nearby Accidents',
+        importance: AndroidImportance.HIGH,
+      });
+
+      console.log('📨 Sending test notification...');
+      await notifee.displayNotification({
+        title: '🚨 Test Alert',
+        body: 'This is a test notification from app startup.',
+        android: {
+          channelId: 'accidents',
+          pressAction: {id: 'default'},
+        },
+      });
+    }
+
+    setupNotifications();
+  }, []);
+
   return (
     <SafeAreaProvider>
       <View style={styles.appContainer}>
         <NavigationContainer>
           <Stack.Navigator
             initialRouteName="Splash"
-            screenOptions={{headerShown: false}} // ✅ Hides all headers globally
-          >
+            screenOptions={{headerShown: false}}>
             <Stack.Screen name="Splash" component={SplashScreen} />
             <Stack.Screen name="FirstLogin" component={FirstLoginScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
             <Stack.Screen name="HomeScreen" component={HomeTabs} />
             <Stack.Screen name="AccidentScreen" component={AccidentScreen} />
-            <Stack.Screen name="NewAccidentScreen" component={NewAccidentScreen} />
-            <Stack.Screen name="EditAccidentScreen" component={EditAccidentScreen} />
+            <Stack.Screen
+              name="NewAccidentScreen"
+              component={NewAccidentScreen}
+            />
+            <Stack.Screen
+              name="EditAccidentScreen"
+              component={EditAccidentScreen}
+            />
             <Stack.Screen name="AnalysisScreen" component={AnalysisScreen} />
             <Stack.Screen name="ReportScreen" component={ReportScreen} />
             <Stack.Screen name="FiltersScreen" component={FiltersScreen} />
@@ -60,7 +91,6 @@ const App = () => {
   );
 };
 
-// Helper function for tab bar icons
 const getTabBarIcon = (
   route: string,
   focused: boolean,
@@ -87,7 +117,7 @@ const HomeTabs = () => {
     <Tab.Navigator
       initialRouteName="HomeTab"
       screenOptions={({route}) => ({
-        headerShown: false, // ✅ Hides tab screen headers
+        headerShown: false,
         tabBarIcon: ({focused, color, size}) =>
           getTabBarIcon(route.name, focused, color, size),
         tabBarActiveTintColor: '#007AFF',

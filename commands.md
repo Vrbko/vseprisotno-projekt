@@ -1,5 +1,10 @@
 # COMMANDS
 
+## START
+
+- npx react-native start
+- npx react-native run-android
+
 ## START EMULATOR
 
 - & "C:\Users\Uporabnik\AppData\Local\Android\Sdk\emulator\emulator.exe" -avd Medium_Phone_API_36.0
