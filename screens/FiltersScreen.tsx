@@ -11,6 +11,7 @@ import Slider from '@react-native-community/slider';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 type RootStackParamList = {
@@ -88,8 +89,17 @@ const FiltersScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Filter</Text>
+      {/* ✅ Header with back button */}
+      <View style={styles.navHeader}>
+        <TouchableOpacity
+          style={styles.sideIcon}
+          onPress={() => navigation.goBack()}>
+          <Icon name="arrow-back-outline" size={26} color="#2c3e86" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Filter</Text>
+        <View style={styles.sideIcon}>
+          <Text></Text>
+        </View>
       </View>
 
       <Text style={styles.section}>Distance</Text>
@@ -190,11 +200,17 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
     backgroundColor: '#f0f0f0',
   },
-  header: {
+  navHeader: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 24,
+    justifyContent: 'space-between',
+    marginBottom: 16,
   },
-  title: {
+  sideIcon: {
+    width: 40,
+    alignItems: 'center',
+  },
+  headerTitle: {
     fontSize: 26,
     fontWeight: 'bold',
     color: '#2c3e86',
